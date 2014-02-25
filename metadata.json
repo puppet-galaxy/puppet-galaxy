@@ -1,0 +1,28 @@
+{
+  "name": "urgi-galaxy",
+  "version": "0.0.1",
+  "source": "UNKNOWN",
+  "author": "urgi",
+  "license": "Apache License, Version 2.0",
+  "summary": "A module for a basic Galaxy installation. Galaxy is an open, web-based platform for accessible, reproducible, and transparent computational biomedical research.",
+  "description": "This module installs a very basic Galaxy server with no customisation. Quoting Galaxy wiki:\"The basic installation instructions are suitable for development by a single user, but when setting up Galaxy for a multi-user production environment, there are some additional steps that should be taken for the best performance.\" see https://wiki.galaxyproject.org/Admin/Config/Performance/ProductionServer",
+  "project_page": "UNKNOWN",
+  "dependencies": [
+
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "Modulefile": "5ef1adb4c32bf17ef7ac4c71ffd135b5",
+    "README": "646730ad0e20ac31e34e181919df6ead",
+    "README.md": "9ae1941e2b90269467d26a196ce62d35",
+    "manifests/dependencies.pp": "10fc17a7fbb4484e498b5e7de78b43bf",
+    "manifests/first_run.pp": "674a7303508631bcd0d96cdc45b0915c",
+    "manifests/init.pp": "05501446b36c6d068bf5ccd16c619fd1",
+    "manifests/install.pp": "5e79b95d197ebb34691954979bd7c409",
+    "manifests/update.pp": "2779edfe223077d5faf26f5e64669ba4",
+    "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
+    "tests/init.pp": "bd84a92da9669813a6dc57b4f1fb149c"
+  }
+}
