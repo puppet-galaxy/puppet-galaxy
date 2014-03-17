@@ -1,4 +1,5 @@
 class galaxy::dependencies {
+
   user { 'galaxy':
     ensure     => present,
     home       => '/home/galaxy',
@@ -16,4 +17,12 @@ class galaxy::dependencies {
   package { 'tar' :
     ensure => installed,
   }
+ 
+  if 'Debian' == $osfamily {
+    package { 'dpkg' :
+      ensure => installed,
+    }
+  }
+
+
 }
