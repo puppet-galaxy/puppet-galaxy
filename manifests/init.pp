@@ -37,5 +37,5 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 class galaxy {
-  include galaxy::dependencies, galaxy::install, galaxy::update, galaxy::first_run 
+  include galaxy::dependencies, galaxy::install, galaxy::update, galaxy::first_run, galaxy::debian-init
 }
