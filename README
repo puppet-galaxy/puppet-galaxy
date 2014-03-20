@@ -12,13 +12,11 @@ Using it :
 
 * To stop it :
 
-su - galaxy
-/home/galaxy/galaxy-dist/run.sh --stop-daemon
+sudo /etc/init.d/galaxy stop
 
 * To run it again :
 
-su - galaxy
-/home/galaxy/galaxy-dist/run.sh --daemon
+sudo /etc/init.d/galaxy restart
 
 Contact
 -------
