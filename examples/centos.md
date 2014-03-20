@@ -31,8 +31,5 @@ host=0.0.0.0
 
 * Restart galaxy
 <pre>
-su - galaxy
-cd /home/galaxy/galaxy-dist
-./run.sh -stop-daemon
-./run.sh --daemon 
+/etc/init.d/galaxy restart
 </pre>
