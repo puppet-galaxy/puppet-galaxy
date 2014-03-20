@@ -1,5 +1,5 @@
 name    'urgi-galaxy'
-version '0.0.1'
+version '0.0.2'
 author 'urgi'
 license 'Apache License, Version 2.0'
 summary 'A module for a basic Galaxy installation. Galaxy is an open, web-based platform for accessible, reproducible, and transparent computational biomedical research.'
