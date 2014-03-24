@@ -1,20 +1,19 @@
-class galaxy::service {
+define galaxy::service (
+  $directory = $galaxy::params::directory,
+){
   case $osfamily {
-    Debian: { $source='puppet:///modules/galaxy/galaxy.debian-init'}
-    RedHat: { $source='puppet:///modules/galaxy/galaxy.fedora-init'}
+    Debian: { $source='galaxy/galaxy.debian-init.erb'}
+    RedHat: { $source='galaxy/galaxy.fedora-init.erb'}
     default: {fail('no init script for this osfamily')}
   }
-  file { '/etc/init.d/galaxy' :
-    source   => $source,
+  file { "/etc/init.d/galaxy-$name":
+    content  => template($source),
     owner    => 'root',
     group    => 'root',
     mode     => '0755',
-    require  => Class['galaxy::first_run'],
-  }
-
-  service { 'galaxy' :
-    ensure     => 'running',
-    enable     => true,
-    require    => File['/etc/init.d/galaxy'],
+#  } -> service { "galaxy-$name" :
+ #   ensure     => 'running',
+  #  enable     => true,
+   # require    => File["/etc/init.d/galaxy-$name"],
   }
 }

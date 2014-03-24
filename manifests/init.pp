@@ -23,19 +23,32 @@
 #
 # === Examples
 #
-#  class { galaxy:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#  include 'galaxy'
+#  galaxy::instance { 'Development':
+#    directory => '/home/galaxy/galaxy-test'
 #  }
 #
 # === Authors
 #
 # Author Name <mloaec@versailles.inra.fr>
 # Author Name <oinizan@versailles.inra.fr>
+# Eric Rasche <rasche.eric@yandex.ru>
 #
 # === Copyright
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class galaxy {
-  include galaxy::dependencies, galaxy::install, galaxy::update, galaxy::first_run, galaxy::service
+class galaxy ( 
+	$galaxy_branch = $galaxy::params::galaxy_branch,
+	$create_user   = $galaxy::params::create_user,
+	$directory     = $galaxy::params::directory,
+) inherits galaxy::params {
+  class { 'galaxy::dependencies': }
+  if($create_user){
+    user { 'galaxy':
+      ensure     => present,
+      home       => $directory,
+      managehome => true,
+    }
+  }
 }

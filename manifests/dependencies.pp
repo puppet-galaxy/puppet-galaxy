@@ -1,10 +1,4 @@
-class galaxy::dependencies {
-
-  user { 'galaxy':
-    ensure     => present,
-    home       => '/home/galaxy',
-    managehome => true,
-  }
+class galaxy::dependencies(){
 
   package { 'mercurial' :
     ensure => installed,
@@ -23,6 +17,5 @@ class galaxy::dependencies {
       ensure => installed,
     }
   }
-
 
 }
