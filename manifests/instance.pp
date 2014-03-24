@@ -13,8 +13,13 @@ define galaxy::instance (
   #  directory => "$directory"
   }
   
+  # TODO: refresh the service
   galaxy::toolshed_conf{ "$name":
     directory => "$directory",
     custom_toolsheds => $custom_toolsheds,
+  } 
+  
+  galaxy::universe{ "$name":
+    directory => "$directory",
   } 
 }
