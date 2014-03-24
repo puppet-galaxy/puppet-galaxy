@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<tool_sheds>
+<% Array(@default_toolsheds).each do |toolshed| %>
+    <tool_shed name="<%= toolshed['name'] %>" url="<%= toolshed['url'] %>"/>
+<% end %>
+<% Array(@custom_toolsheds).each do |toolshed| %>
+    <tool_shed name="<%= toolshed['name'] %>" url="<%= toolshed['url'] %>"/>
+<% end %>
+</tool_sheds>
