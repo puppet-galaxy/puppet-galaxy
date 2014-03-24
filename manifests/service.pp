@@ -11,9 +11,9 @@ define galaxy::service (
     owner    => 'root',
     group    => 'root',
     mode     => '0755',
-#  } -> service { "galaxy-$name" :
- #   ensure     => 'running',
-  #  enable     => true,
-   # require    => File["/etc/init.d/galaxy-$name"],
+  } -> service { "galaxy-$name" :
+    ensure     => 'running',
+    enable     => true,
+    require    => File["/etc/init.d/galaxy-$name"],
   }
 }
