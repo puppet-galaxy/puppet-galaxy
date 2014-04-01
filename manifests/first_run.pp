@@ -1,10 +1,30 @@
-class galaxy::first_run {
-  exec { 'galaxy-first_run' :
+# == Class: galaxy::first_run
+#
+# On first run, galaxy grabs a large number of eggs and sets up configuration files from templates. We do that manually here
+#
+# === Examples
+#
+#  galaxy::first_run{'development': }
+#
+# === Authors
+#
+# M. Loaec <mloaec@versailles.inra.fr>
+# O. Inizan <oinizan@versailles.inra.fr>
+# Eric Rasche <rasche.eric@yandex.ru>
+#
+# === Copyright
+#
+# Copyright 2014, unless otherwise noted.
+#
+define galaxy::first_run(
+  directory = $galaxy::params::directory
+){
+  exec { "galaxy-${name}-eggs-and-universeconf":
      path => '/usr/bin:/usr/sbin:/bin:/sbin',
-     cwd  => '/home/galaxy/galaxy-dist',
+     cwd  => $directory,
      user => 'galaxy',
-     command => '/home/galaxy/galaxy-dist/run.sh --daemon;/home/galaxy/galaxy-dist/run.sh --stop-daemon',
-     creates => '/home/galaxy/galaxy-dist/universe_wsgi.ini',
-     require => Class['galaxy::update'],
+     # Run the 'stop' command so the server runs the conf file generating stuff once
+     command => "bash run.sh --stop-daemon",
+     creates => "$directory/universe_wsgi.ini",
   }
 }

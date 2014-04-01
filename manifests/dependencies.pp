@@ -1,20 +1,23 @@
-class galaxy::dependencies {
+# == Class: galaxy::dependencies
+#
+# Dependencies for the galaxy server
+#
+#
+# === Authors
+#
+# M. Loaec <mloaec@versailles.inra.fr>
+# O. Inizan <oinizan@versailles.inra.fr>
+# Eric Rasche <rasche.eric@yandex.ru>
+#
+# === Copyright
+#
+# Copyright 2014, unless otherwise noted.
+#
+class galaxy::dependencies(){
 
-  user { 'galaxy':
-    ensure     => present,
-    home       => '/home/galaxy',
-    managehome => true,
-  }
+  $packages = ['mercurial', 'python', 'tar']
 
-  package { 'mercurial' :
-    ensure => installed,
-  }
-
-  package { 'python' :
-    ensure => installed,
-  }
-
-  package { 'tar' :
+  package { $packages:
     ensure => installed,
   }
  
@@ -23,6 +26,5 @@ class galaxy::dependencies {
       ensure => installed,
     }
   }
-
 
 }
