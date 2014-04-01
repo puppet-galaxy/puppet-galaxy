@@ -760,7 +760,7 @@ retry_metadata_internally = False
 outputs_to_working_directory = True
 <% end %>
 
-<% if @retry_job_output_collection > 0 %>
+<% if Integer(@retry_job_output_collection) > 0 %>
 # if your network filesystem's caching prevents the galaxy server from seeing
 # the job's stdout and stderr files when it completes, you can retry reading
 # these files.  the job runner will retry the number of times specified below,
