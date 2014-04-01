@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<job_conf>
+    <plugins workers="<%= @default_worker_threads %>">
+        <!-- "workers" is the number of threads for the runner's work queue.
+             The default from <plugins> is used if not defined for a <plugin>.
+          -->
+        <% if @enable_runner_local %>
+        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
+        <% end %>
+        <% if @enable_runner_pbs %>
+        <plugin id="pbs" type="runner" load="galaxy.jobs.runners.pbs:PBSJobRunner" workers="2"/>
+        <% end %>
+        <% if @enable_runner_drmaa %>
+        <plugin id="drmaa" type="runner" load="galaxy.jobs.runners.drmaa:DRMAAJobRunner"/>
+        <% end %>
+        <% if @enable_runner_lwr %>
+        <!-- https://lwr.readthedocs.org -->
+        <plugin id="lwr" type="runner" load="galaxy.jobs.runners.lwr:LwrJobRunner" /> 
+        <% end %>
+        <% if @enable_runner_cli %>
+        <plugin id="cli" type="runner" load="galaxy.jobs.runners.cli:ShellJobRunner" />
+        <% end %>
+        <% if @enable_runner_condor %>
+        <plugin id="condor" type="runner" load="galaxy.jobs.runners.condor:CondorJobRunner" />
+        <% end %>
+    </plugins>
+    <handlers default="handlers">
+        <!-- Additional job handlers - the id should match the name of a
+             [server:<id>] in universe_wsgi.ini.
+         -->
+        <% for i in @number_of_background_workers_array do %>
+        <handler id="handler<%= i %>" tags="handlers" />
+        <% end %>
+    </handlers>
+    <destinations default="local">
+        <% Array(@destinations).each do |dest| %>
+            <destination id="<%= dest['id'] %>" runner="<%= dest['runner'] %>"/>
+        <% end %>
+    </destinations>
+    <tools>
+    </tools>
+</job_conf>
