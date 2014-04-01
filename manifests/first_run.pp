@@ -1,3 +1,21 @@
+# == Class: galaxy::first_run
+#
+# On first run, galaxy grabs a large number of eggs and sets up configuration files from templates. We do that manually here
+#
+# === Examples
+#
+#  galaxy::first_run{'development': }
+#
+# === Authors
+#
+# M. Loaec <mloaec@versailles.inra.fr>
+# O. Inizan <oinizan@versailles.inra.fr>
+# Eric Rasche <rasche.eric@yandex.ru>
+#
+# === Copyright
+#
+# Copyright 2014, unless otherwise noted.
+#
 define galaxy::first_run(
   directory = $galaxy::params::directory
 ){

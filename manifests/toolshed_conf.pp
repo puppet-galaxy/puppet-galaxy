@@ -1,3 +1,30 @@
+# == Class: galaxy::toolshed_conf
+#
+# Galaxy toolshed configuration. Specifies which toolsheds are available to use
+# in the web interface.
+#
+# === Parameters
+#
+# [*directory*]
+#   The main directory for galaxy instances that will be installed on this
+#   server.
+#
+# === Examples
+#
+#  galaxy::toolshed_conf { "production":
+#    custom_toolsheds => [
+#      { name => 'Private Toolshed', url => 'https://localhost/toolshed/' }
+#    ]
+#  }
+#
+# === Authors
+#
+# Eric Rasche <rasche.eric@yandex.ru>
+#
+# === Copyright
+#
+# Copyright 2014, unless otherwise noted.
+#
 define galaxy::toolshed_conf (
   directory = $galaxy::params::directory,
   $default_toolsheds = [
