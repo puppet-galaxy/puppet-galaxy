@@ -44,7 +44,7 @@
 #	threadpool_kill_thread_limit = 10800
 
 
-<% for i in @number_of_background_workers do %>
+<% for i in @number_of_background_workers_array do %>
   [server:web<%= i %>]
   use=egg:Paste#http
   port=<%= @handler_starting_port_number.to_i + i %>
@@ -54,7 +54,7 @@
 
 <% end %>
 
-<% for i in @number_of_web_workers do %>
+<% for i in @number_of_web_workers_array do %>
   [server:handler<%= i %>]
   use=egg:Paste#http
   port=<%= @webworker_starting_port_number.to_i + i %>

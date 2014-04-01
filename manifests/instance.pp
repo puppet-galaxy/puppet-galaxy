@@ -18,6 +18,9 @@ define galaxy::instance (
     directory => "$directory",
     custom_toolsheds => $custom_toolsheds,
   } 
+  galaxy::job_conf { "$name":
+    directory => "$directory",
+  } 
   
   galaxy::universe{ "$name":
     directory => "$directory",

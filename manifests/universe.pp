@@ -2,13 +2,12 @@ define galaxy::universe(
   directory = $galaxy::params::directory,
 
   # Worker Configuration
-  $number_of_background_workers = range("0","4"),
+  $number_of_background_workers = 4,
   $handler_starting_port_number = 8000,
   $handler_host_to_listen_on = "0.0.0.0",
   $handler_threadpool_workers = 5,
 
-  $number_of_web_workers = range("0","4"),
-  $webworker_starting_port_number = 8000+size($number_of_background_workers),
+  $number_of_web_workers = 4,
   $webworker_host_to_listen_on = "0.0.0.0",
   $webworker_threadpool_workers = 5,
 
@@ -169,9 +168,13 @@ define galaxy::universe(
 
 ){
 
+  $webworker_starting_port_number = $handler_starting_port_number+$number_of_background_workers
+  $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
+  $number_of_web_workers_array = range("0", -1+$number_of_web_workers)
 
   file { "$directory/universe_wsgi.ini":
     content => template("galaxy/universe_wsgi.ini.erb"),
   }
+
 
 }
