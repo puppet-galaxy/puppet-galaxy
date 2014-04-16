@@ -1,6 +1,6 @@
-# == Class: galaxy
+# == Class: galaxy::params
 #
-# Main Galaxy class, required to set up dependencies. Will not create an instance on its own
+# Default parameters for the galaxy puppet package to use
 #
 # === Parameters
 #
@@ -16,14 +16,6 @@
 #   The main directory for galaxy instances that will be installed on this
 #   server.
 #
-#
-# === Examples
-#
-#  class { 'galaxy':
-#    create_user => true,
-#    directory => /home/galaxy/,
-#  }
-#
 # === Authors
 #
 # M. Loaec <mloaec@versailles.inra.fr>
@@ -34,17 +26,8 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-class galaxy ( 
-	$galaxy_branch = $galaxy::params::galaxy_branch,
-	$create_user   = $galaxy::params::create_user,
-	$directory     = $galaxy::params::directory,
-) inherits galaxy::params {
-  class { 'galaxy::dependencies': }
-  if($create_user){
-    user { 'galaxy':
-      ensure     => present,
-      home       => $directory,
-      managehome => true,
-    }
-  }
+class galaxy::params {
+  $galaxy_branch = 'stable'
+  $createuser = true
+  $directory = '/home/galaxy/galaxy-dist/'
 }
