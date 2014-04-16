@@ -64,21 +64,21 @@
 # Copyright 2014, unless otherwise noted.
 #
 define galaxy::job_conf(
-  directory = $galaxy::params::directory,
-  number_of_background_workers = 4,
+  $directory = $galaxy::params::directory,
+  $number_of_background_workers = 4,
 
   # Runners
-  enable_runner_local = true,
-  enable_runner_pbs = false,
-  enable_runner_drmaa = false,
-  enable_runner_lwr = false,
-  enable_runner_cli = false,
-  enable_runner_condor = false,
+  $enable_runner_local = true,
+  $enable_runner_pbs = false,
+  $enable_runner_drmaa = false,
+  $enable_runner_lwr = false,
+  $enable_runner_cli = false,
+  $enable_runner_condor = false,
 
-  default_worker_threads = 4,
+  $default_worker_threads = 4,
 
-  default_destination = 'local',
-  destinations = [
+  $default_destination = 'local',
+  $destinations = [
     { id => 'local', runner => 'local' }
   ]
 ){

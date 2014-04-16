@@ -26,7 +26,7 @@
 # Copyright 2014, unless otherwise noted.
 #
 define galaxy::toolshed_conf (
-  directory = $galaxy::params::directory,
+  $directory = $galaxy::params::directory,
   $default_toolsheds = [
     { name => 'Galaxy main tool shed', url => 'http://toolshed.g2.bx.psu.edu/' },
     { name => 'Galaxy test tool shed', url => 'http://testtoolshed.g2.bx.psu.edu/' }

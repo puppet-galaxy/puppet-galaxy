@@ -455,7 +455,7 @@
 # Copyright 2014, for the puppet code representing a universe_wsgi.ini resource. 
 #
 define galaxy::universe(
-  directory = $galaxy::params::directory,
+  $directory = $galaxy::params::directory,
 
   # Worker Configuration
   $number_of_background_workers = 4,

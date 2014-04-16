@@ -28,8 +28,8 @@
 # Copyright 2014, unless otherwise noted.
 #
 define galaxy::install(
-  directory = $galaxy::params::directory,
-  galaxy_branch = $galaxy::params::galaxy_branch,
+  $directory = $galaxy::params::directory,
+  $galaxy_branch = $galaxy::params::galaxy_branch,
 ){
 
   # There is a "bug" here in that every puppet run we'll get notifications of switching branches, even though we're not actually making changes. E.g.,
