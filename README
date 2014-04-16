@@ -7,17 +7,20 @@ These base blocks are agregated in profiles and roles.
 See [NAME TO FIND MODULE ON PUPPET FORGE] for Galaxy roles and profiles.
 
 Github projects
---------------
+---------------
+
 Projects for base blocks and roles+profiles are hosted on github:
 https://github.com/puppet-galaxy/puppet-galaxy
 [URL TO FIND ROLES+PROFILES PROJECT ON GITHUB]
 
 Contact
 -------
+
 Mikael Loaec mloaec@versailles.inra.fr
 oinizan@versailles.inra.fr
 Eric Rasche rasche.eric@yandex.ru
 
 More info about Galaxy :
 ------------------------
+
 http://galaxyproject.org
