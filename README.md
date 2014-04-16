@@ -11,8 +11,7 @@ Github projects
 
 Projects for base blocks and roles+profiles are hosted on github:
 https://github.com/puppet-galaxy/puppet-galaxy
-[URL TO FIND ROLES+PROFILES PROJECT ON GITHUB]
-
+https://github.com/puppet-galaxy/galaxy-roles-profiles
 
 Contact
 -------
