@@ -18,7 +18,9 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-define galaxy::service (){
+define galaxy::service (
+  $directory = $galaxy::params::directory,
+){
   case $osfamily {
     Debian: { $source='galaxy/galaxy.debian-init.erb'}
     RedHat: { $source='galaxy/galaxy.fedora-init.erb'}
