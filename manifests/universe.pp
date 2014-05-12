@@ -495,6 +495,7 @@ define galaxy::universe(
   $upstream_gzip = true,
 
   # Database 
+  $db_config = 'true',
   $db_driver = 'postgresql',
   $db_username = 'galaxy',
   $db_password = 'my-secure-password',
