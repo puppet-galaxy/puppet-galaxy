@@ -7,4 +7,6 @@ description 'This module installs a very basic Galaxy server with no customisati
 project_page 'UNKNOWN'
 
 ## Add dependencies, if any:
-# dependency 'username/name', '>= 1.2.0'
+# dependency 'username/name', '>= x.x.x'
+dependency 'puppetlabs/stdlib', '>=3.2.1'
+dependency 'puppetlabs/vcsrepo', '>=0.2.0'
