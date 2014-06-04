@@ -444,6 +444,8 @@
 # === Authors
 #
 # Eric Rasche <rasche.eric@yandex.ru>
+# O. Inizan <olivier.inizan@versailles.inra.fr>
+# S. Bridel <sebastien.bridel@versailles.inra.fr>
 #
 # NOTE: The documentation was largely copied from `universe_wsgi.ini`. A small
 # portion of it was written by Eric Rasche where universe_wsgi.ini was found
@@ -495,7 +497,7 @@ define galaxy::universe(
   $upstream_gzip = true,
 
   # Database 
-  $db_config = 'true',
+  $db_config = true,
   $db_driver = 'postgresql',
   $db_username = 'galaxy',
   $db_password = 'my-secure-password',
