@@ -110,7 +110,7 @@ cookie_path = <%= @proxy_prefix %>
 
 # -- Database
 
-<%if @db_config.eql?"false" %>
+<%if not @db_config %>
 # By default, Galaxy uses a SQLite database at 'database/universe.sqlite'.  You
 # may use a SQLAlchemy connection string to specify an external database
 # instead.  This string takes many options which are explained in detail in the
