@@ -18,32 +18,8 @@
 # ---- HTTP Server ----------------------------------------------------------
 
 # Configuration of the internal HTTP server.
-
-#	[server:main]
 #	
-#	# The internal HTTP server to use.  Currently only Paste is provided.  This
-#	# option is required.
-#	use = egg:Paste#http
-#	
-#	# The port on which to listen.
-#	port = 8081
-#	
-#	# The address on which to listen.  By default, only listen to localhost (Galaxy
-#	# will not be accessible over the network).  Use '0.0.0.0' to listen on all
-#	# available network interfaces.
-#	host = 0.0.0.0
-#	
-#	# Use a threadpool for the web server instead of creating a thread for each
-#	# request.
-#	use_threadpool = True
-#	
-#	# Number of threads in the web server thread pool.
-#	threadpool_workers = 10
-#	
-#	# Set the number of seconds a thread can work before you should kill it (assuming it will never finish) to 3 hours.
-#	threadpool_kill_thread_limit = 10800
-
-
+<%if @wk_config%>
 <% for i in @number_of_background_workers_array do %>
 [server:web<%= i %>]
 use=egg:Paste#http
@@ -63,6 +39,29 @@ use_threadpool=true
 threadpool_workers=<%= @webworker_threadpool_workers %>
 <% end %>
 
+<%else%>
+[server:main]
+# The internal HTTP server to use.  Currently only Paste is provided.  This
+#	option is required.
+use = egg:Paste#http	
+# The port on which to listen.
+#port = 8081
+#	
+# The address on which to listen.  By default, only listen to localhost (Galaxy
+# will not be accessible over the network).  Use '0.0.0.0' to listen on all
+# available network interfaces.
+#host = 0.0.0.0
+#	
+#	Use a threadpool for the web server instead of creating a thread for each
+#	request.
+use_threadpool = True
+#	
+#	Number of threads in the web server thread pool.
+#threadpool_workers = 10
+#	
+#	Set the number of seconds a thread can work before you should kill it (assuming it will never finish) to 3 hours.
+threadpool_kill_thread_limit = 10800
+<% end  %>
 
 # ---- Filters --------------------------------------------------------------
 # Filters sit between Galaxy and the HTTP server.
