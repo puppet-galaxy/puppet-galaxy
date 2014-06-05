@@ -460,6 +460,7 @@ define galaxy::universe(
   $directory = $galaxy::params::directory,
 
   # Worker Configuration
+  $wk_config = false,
   $number_of_background_workers = 4,
   $handler_starting_port_number = 8000,
   $handler_host_to_listen_on = "0.0.0.0",
@@ -497,7 +498,7 @@ define galaxy::universe(
   $upstream_gzip = true,
 
   # Database 
-  $db_config = true,
+  $db_config = false,
   $db_driver = 'postgresql',
   $db_username = 'galaxy',
   $db_password = 'my-secure-password',
@@ -505,7 +506,7 @@ define galaxy::universe(
   $db_port = 5432,
   $db_database = 'galaxydb',
 
-  $db_opts_pool_size = '500M',
+  $db_opts_pool_size = '500',
   $db_opts_max_overflow = 1000,
 
 
