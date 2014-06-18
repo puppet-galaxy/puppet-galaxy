@@ -20,21 +20,21 @@
 # Configuration of the internal HTTP server.
 #	
 <%if @wk_config%>
-<% for i in @number_of_background_workers_array do %>
+<% for i in @number_of_workers_array do %>
 [server:web<%= i %>]
-use=egg:Paste#http
-port=<%= @handler_starting_port_number.to_i + i %>
-host=<%= @handler_host_to_listen_on %>
-use_threadpool=true
-threadpool_workers=<%= @handler_threadpool_workers %>
-
-<% end %>
-
-<% for i in @number_of_web_workers_array do %>
-[server:handler<%= i %>]
 use=egg:Paste#http
 port=<%= @webworker_starting_port_number.to_i + i %>
 host=<%= @webworker_host_to_listen_on %>
+use_threadpool=true
+threadpool_workers=<%= @webworker_threadpool_workers %>
+
+<% end %>
+
+<% for i in @number_of_background_workers_array do %>
+[server:handler<%= i %>]
+use=egg:Paste#http
+port=<%= @handler_starting_port_number.to_i + i %>
+host=<%= @handler_host_to_listen_on %>
 use_threadpool=true
 threadpool_workers=<%= @webworker_threadpool_workers %>
 <% end %>
