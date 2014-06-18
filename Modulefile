@@ -9,4 +9,4 @@ project_page 'UNKNOWN'
 ## Add dependencies, if any:
 # dependency 'username/name', '>= x.x.x'
 dependency 'puppetlabs/stdlib', '>=3.2.1'
-dependency 'puppetlabs/vcsrepo', '>=0.2.0'
+dependency 'puppetlabs/vcsrepo', '>=1.0.0'
