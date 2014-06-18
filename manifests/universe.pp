@@ -461,14 +461,15 @@ define galaxy::universe(
 
   # Worker Configuration
   $wk_config = false,
-  $number_of_background_workers = 4,
-  $handler_starting_port_number = 8000,
-  $handler_host_to_listen_on = "0.0.0.0",
-  $handler_threadpool_workers = 5,
 
   $number_of_web_workers = 4,
+  $webworker_starting_port_number = 8000,
   $webworker_host_to_listen_on = "0.0.0.0",
   $webworker_threadpool_workers = 5,
+
+  $number_of_background_workers = 4, 
+  $handler_host_to_listen_on = "0.0.0.0",
+  $handler_threadpool_workers = 5,
 
   # Proxying
   $use_prefix = true,
@@ -588,7 +589,11 @@ define galaxy::universe(
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = 'database/whoosh_indexes',
+  $whoosh_index_dir = 'database/whoos
+  $number_of_web_workers = 4,
+  $webworker_host_to_listen_on = "0.0.0.0",
+  $webworker_threadpool_workers = 5,
+h_indexes',
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
@@ -629,7 +634,7 @@ define galaxy::universe(
 
 ){
 
-  $webworker_starting_port_number = $handler_starting_port_number+$number_of_background_workers
+  $handler_starting_port_number = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
   $number_of_web_workers_array = range("0", -1+$number_of_web_workers)
   
