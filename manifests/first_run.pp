@@ -24,8 +24,9 @@ define galaxy::first_run(
      cwd  => $directory,
      user => 'galaxy',
      # Run the 'stop' command so the server runs the conf file generating stuff once
-     command => "bash run.sh --daemon;bash run.sh --stop-daemon;sh manage_db.sh upgrade",
+     command => "bash run.sh --daemon;bash run.sh --stop-daemon",
      returns => 1,
      creates => "$directory/universe_wsgi.ini",
   }
+  # class { 'galaxy::upgrade-database':}
 }
