@@ -10,7 +10,11 @@ Github projects
 --------------
 
 Projects for base blocks and roles+profiles are hosted on github:
+
+
 https://github.com/puppet-galaxy/puppet-galaxy
+
+
 https://github.com/puppet-galaxy/galaxy-roles-profiles
 
 Contact
@@ -18,7 +22,9 @@ Contact
 
 mloaec@versailles.inra.fr
 
+
 oinizan@versailles.inra.fr
+
 
 Eric Rasche rasche.eric@yandex.ru
 
