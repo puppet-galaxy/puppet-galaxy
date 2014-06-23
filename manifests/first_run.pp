@@ -27,4 +27,6 @@ define galaxy::first_run(
      command => "bash run.sh --daemon;bash run.sh --stop-daemon",
      creates => "$directory/universe_wsgi.ini",
   }
+#  class{ 'galaxy::upgrade-database':
+#  }
 }
