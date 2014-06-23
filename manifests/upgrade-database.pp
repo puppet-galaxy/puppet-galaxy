@@ -14,5 +14,6 @@ class galaxy::upgrade-database() {
     cwd     => $directory,
     user    => 'galaxy',
     command => "sh manage_db.sh upgrade",
+    returns => 1,
   }
 }
