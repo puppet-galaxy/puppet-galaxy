@@ -8,9 +8,10 @@
 #
 # === Authors
 #
-# M. Loaec <mloaec@versailles.inra.fr>
+# M. Loaec  <mloaec@versailles.inra.fr>
 # O. Inizan <oinizan@versailles.inra.fr>
-# Eric Rasche <rasche.eric@yandex.ru>
+# E. Rasche <rasche.eric@yandex.ru>
+# S. Bridel <sbridel@versailles.inra.fr>
 #
 # === Copyright
 #
