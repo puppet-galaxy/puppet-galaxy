@@ -20,12 +20,25 @@ define galaxy::first_run(
   $directory = $galaxy::params::directory
 ){
   exec { "galaxy-${name}-eggs-and-universeconf":
-     path => '/usr/bin:/usr/sbin:/bin:/sbin',
-     cwd  => $directory,
-     user => 'galaxy',
-     # Run the 'stop' command so the server runs the conf file generating stuff once
-     command => "bash run.sh --daemon;bash run.sh --stop-daemon;sh manage_db.sh upgrade",
-     returns => 1,
-     creates => "$directory/universe_wsgi.ini",
+    path => '/usr/bin:/usr/sbin:/bin:/sbin',
+    cwd  => $directory,
+    user => 'galaxy',
+    command => "bash run.sh --daemon",
+    timeout => 0, 
+    creates => "$directory/universe_wsgi.ini",
+  }->
+  exec { 'finish first run':
+    path => '/usr/bin:/usr/sbin:/bin:/sbin', 
+    command => "sleep 30 |grep serving $directory/paster.log;",
+    tries => 100,
+    returns => 0,
+    creates => "$directory/universe_wsgi.ini",
+  }->
+  exec { 'stop daemon':
+    path => '/usr/bin:/usr/sbin:/bin:/sbin',
+    cwd  => $directory,
+    user => 'galaxy',
+    command => "bash run.sh --stop-daemon",  
+    creates => "$directory/universe_wsgi.ini",
   }
 }
