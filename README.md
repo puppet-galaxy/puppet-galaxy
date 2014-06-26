@@ -1,4 +1,5 @@
-Galaxy
+#Puppet-Galaxy
+####Tables of Contents
 ------
 
 This is the Galaxy module. Galaxy is an open, web-based platform for accessible, reproducible, and transparent computational biomedical research.
