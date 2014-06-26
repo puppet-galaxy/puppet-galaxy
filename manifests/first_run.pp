@@ -21,25 +21,25 @@ define galaxy::first_run(
   $directory = $galaxy::params::directory
 ){
   exec { "galaxy-${name}-eggs-and-universeconf":
-    path => '/usr/bin:/usr/sbin:/bin:/sbin',
-    cwd  => $directory,
-    user => 'galaxy',
+    path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+    cwd     => $directory,
+    user    => 'galaxy',
     command => "bash run.sh --daemon",
     timeout => 0, 
     creates => "$directory/universe_wsgi.ini",
   }->
   exec { 'finish first run':
-    path => '/usr/bin:/usr/sbin:/bin:/sbin', 
+    path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+    onlyif  => "test -f $directory/paster.pid", 
     command => "sleep 30 |grep serving $directory/paster.log;",
-    tries => 100,
+    tries   => 100,
     returns => 0,
-    creates => "$directory/universe_wsgi.ini",
   }->
   exec { 'stop daemon':
-    path => '/usr/bin:/usr/sbin:/bin:/sbin',
-    cwd  => $directory,
-    user => 'galaxy',
+    path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+    cwd     => $directory,
+    user    => 'galaxy',
+    onlyif  => "test -f $directory/paster.pid",
     command => "bash run.sh --stop-daemon",  
-    creates => "$directory/universe_wsgi.ini",
   }
-}
+}  
