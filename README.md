@@ -30,17 +30,34 @@ See urgi/galaxy-roles-profiles for Galaxy roles and profiles.
 
 ##Usage
 ###Classes
-####Class: `galaxy`
 ####Class: `galaxy::dependencies`
+This class installs all the packages required to build one new Galaxy's instances: Mercurial , Python and Tar ( and Dpkg for Debian OS)
+
 ####Class: `galaxy::params`
+This class sets the default parameters for the galaxy puppet module ( create user, directory and galaxy branch)
+
 ###Defined Types
-####`galaxy::first_run`
-####`galaxy::install`
-####`galaxy::instance`
-####`galaxy::job_conf`
-####`galaxy::service`
-####`galaxy::toolshed_conf`
-####`galaxy::universe`
+####Type: `galaxy::first_run`
+This class manages the first run of Galaxy. It means that Galaxy is started by run.sh --daemon and stopped by run.sh --stop-daemon once 
+
+it has serving one time.
+
+####Type: `galaxy::install`
+This class download the remote repository from bickbuckets.org/galaxy/galaxy-dist with mercurial.
+
+####Type: `galaxy::instance`
+This class which represents a single instance of a galaxy server. This was done
+
+this way in the event that you have more than one galaxy server running on a
+
+single host (e.g., development and production)
+
+####Type: `galaxy::job_conf`
+This class write the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp
+
+####Type: `galaxy::service`
+####Type: `galaxy::toolshed_conf`
+####Type: `galaxy::universe`
 
 
 ##Github projects
