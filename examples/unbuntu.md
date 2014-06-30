@@ -8,8 +8,6 @@ apt-get install puppet
 
 * Get urgi-galaxy module
 <pre>
-wget https://forgeapi.puppetlabs.com/v3/files/urgi-galaxy-0.0.1.tar.gz
-tar xvzf urgi-galaxy-0.0.1.tar.gz 
-mv urgi-galaxy-0.0.1 /etc/puppet/modules/galaxy
+puppet module install urgi-galaxy
 puppet apply -e "include galaxy"
 </pre>
