@@ -15,9 +15,10 @@
         * [Type: galaxy::service](#type-galaxyservice)
         * [Type: galaxy::toolshed_conf](#type-galaxytoolshed_conf)
         * [Type: galaxy::universe](#type-galaxyuniverse)
-7. [Github Project](#github-project)
-8. [Contact](#contact)
-9. [Galaxy Project](#galaxy-project)
+5. [Parameters](#parameters)
+6. [Github Project](#github-project)
+7. [Contact](#contact)
+8. [Galaxy Project](#galaxy-project)
 
 ##Overview
 The Galaxy module allows you to download and make up a new instance of galaxy.
@@ -38,30 +39,36 @@ This class sets the default parameters for the galaxy puppet module ( create use
 
 ###Defined Types
 ####Type: `galaxy::first_run`
-This class manages the first run of Galaxy. It means that Galaxy is started by run.sh --daemon and stopped by run.sh --stop-daemon once 
+This type manages the first run of Galaxy. It means that Galaxy is started by run.sh --daemon and stopped by run.sh --stop-daemon once 
 
 it has serving one time.
 
 ####Type: `galaxy::install`
-This class download the remote repository from bickbuckets.org/galaxy/galaxy-dist with mercurial.
+This type download the remote repository from bickbuckets.org/galaxy/galaxy-dist with mercurial.
 
 ####Type: `galaxy::instance`
-This class which represents a single instance of a galaxy server. This was done
+This type which represents a single instance of a galaxy server. This was done
 
 this way in the event that you have more than one galaxy server running on a
 
 single host (e.g., development and production)
 
 ####Type: `galaxy::job_conf`
-This class write the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp
+This type writes the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp
 
 ####Type: `galaxy::service`
+This type configures galaxy service. Currently debain/redhat are the only two supported.
+
 ####Type: `galaxy::toolshed_conf`
+This type writes Galaxy toolshed configuration. Specifies which toolsheds are available to use in the web interface.
+
 ####Type: `galaxy::universe`
 
+This type writes the universe_wsgi.ini , the main configuration file of Galaxy.
+
+##Parameters
 
 ##Github projects
-
 
 Projects for base blocks and roles+profiles are hosted on github:
 
