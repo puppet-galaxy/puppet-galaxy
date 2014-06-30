@@ -2,8 +2,19 @@
 ####Table of Contents
 1. [Overview](#overview)
 2. [Module Description](#module-description)
-3. [Classes](#classes)
-4. [Defined Types](#defined-types)
+3. [Usage](#usage)
+    * [Classes](#classes)
+        * [Class: galaxy](#class-galaxy)
+        * [Class: galaxy::dependencies](#class-galaxydependencies)
+        * [Class: galaxy::params](#class-galaxyparams)
+    * [Defined Types](#defined-types)
+        * [Type: galaxy::first_run](#type-galaxyfirst_run)
+        * [Type: galaxy::install](#type-galaxyinstall)
+        * [Type: galaxy::instance](#type-galaxyinstance)
+        * [Type: galaxy::job_conf](#type-galaxyjob_conf)
+        * [Type: galaxy::service](#type-galaxyservice)
+        * [Type: galaxy::toolshed_conf](#type-galaxytoolshed_conf)
+        * [Type: galaxy::universe](#type-galaxyuniverse)
 7. [Github Project](#github-project)
 8. [Contact](#contact)
 9. [Galaxy Project](#galaxy-project)
@@ -17,18 +28,19 @@ This module contains the base blocks for Galaxy server configuration management.
 These base blocks are agregated in profiles and roles.
 See urgi/galaxy-roles-profiles for Galaxy roles and profiles.
 
-##Classes
-###Class: `galaxy`
-###Class: `galaxy::dependencies`
-###Class: `galaxy::params`
-##Defined Types
-###`galaxy::first_run`
-###`galaxy::install`
-###`galaxy::instance`
-###`galaxy::job_conf`
-###`galaxy::service`
-###`galaxy::toolshed_conf`
-###`galaxy::universe`
+##Usage
+###Classes
+####Class: `galaxy`
+####Class: `galaxy::dependencies`
+####Class: `galaxy::params`
+###Defined Types
+####`galaxy::first_run`
+####`galaxy::install`
+####`galaxy::instance`
+####`galaxy::job_conf`
+####`galaxy::service`
+####`galaxy::toolshed_conf`
+####`galaxy::universe`
 
 
 ##Github projects
