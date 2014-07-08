@@ -69,7 +69,7 @@
 #
 # [*x_accel_redirect*]
 #   The same download handling can be done by nginx using X-Accel-Redirect.
-#   This should be set to the path defined in the nginx config as an internal
+#   This should be set to the path classd in the nginx config as an internal
 #   redirect with access to Galaxy's data files 
 #
 # [*x_archive_files*]
@@ -456,8 +456,8 @@
 #
 # Copyright 2014, for the puppet code representing a universe_wsgi.ini resource. 
 #
-define galaxy::universe(
-  $directory = $galaxy::params::directory,
+class galaxy::universe(
+  $app_directory = $galaxy::params::app_directory,
 
   # Worker Configuration
   $wk_config = false,
@@ -589,11 +589,7 @@ define galaxy::universe(
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = 'database/whoos
-  $number_of_web_workers = 4,
-  $webworker_host_to_listen_on = "0.0.0.0",
-  $webworker_threadpool_workers = 5,
-h_indexes',
+  $whoosh_index_dir = 'database/whoosh_indexes',
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
@@ -642,9 +638,7 @@ h_indexes',
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
   }
 
-  file { "$directory/universe_wsgi.ini":
+  file { "$app_directory/universe_wsgi.ini":
     content => template("galaxy/universe_wsgi.ini.erb"),
   }
-
-
 }
