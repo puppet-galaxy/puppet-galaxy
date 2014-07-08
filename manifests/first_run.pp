@@ -17,14 +17,14 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-define galaxy::first_run(
-  $directory = $galaxy::params::directory
+class galaxy::first_run(
+  $directory = $galaxy::params::app_directory
 ){
   exec { "galaxy-${name}-eggs-and-universeconf":
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
     cwd     => $directory,
     user    => 'galaxy',
-    command => "bash run.sh --daemon",
+    command => 'bash run.sh --daemon',
     timeout => 0, 
     creates => "$directory/universe_wsgi.ini",
   }->
