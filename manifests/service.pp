@@ -18,9 +18,7 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-define galaxy::service (
-  $directory = $galaxy::params::directory,
-){
+define galaxy::service (){
   case $osfamily {
     Debian: { $source='galaxy/galaxy.debian-init.erb'}
     RedHat: { $source='galaxy/galaxy.fedora-init.erb'}
@@ -31,7 +29,8 @@ define galaxy::service (
     owner    => 'root',
     group    => 'root',
     mode     => '0755',
-  } -> service { "galaxy-$name" :
+  }-> 
+  service { "galaxy-$name" :
     ensure     => 'running',
     enable     => true,
     require    => File["/etc/init.d/galaxy-$name"],
