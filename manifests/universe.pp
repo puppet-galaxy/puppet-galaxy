@@ -589,11 +589,7 @@ define galaxy::universe(
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = 'database/whoos
-  $number_of_web_workers = 4,
-  $webworker_host_to_listen_on = "0.0.0.0",
-  $webworker_threadpool_workers = 5,
-h_indexes',
+  $whoosh_index_dir = 'database/whoosh_indexes',
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
