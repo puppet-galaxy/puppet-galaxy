@@ -1,6 +1,6 @@
 # == Class: galaxy::service
 #
-# Configures galaxy service. Currently debain/redhat are the only two supported.
+# Configures galaxy service. Currently debian/redhat are the only two supported.
 #
 # === Examples
 #
@@ -18,9 +18,11 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-define galaxy::service (){
+class galaxy::service (
+  $directory = $galaxy::params::app_directory
+){
   case $osfamily {
-    Debian: { $source='galaxy/galaxy.debian-init.erb'}
+    Debian: { $source='galaxy/galaxy.debian-service.erb'}
     RedHat: { $source='galaxy/galaxy.fedora-init.erb'}
     default: {fail('no init script for this osfamily')}
   }
