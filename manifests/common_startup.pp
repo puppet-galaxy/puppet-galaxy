@@ -14,5 +14,5 @@ class galaxy::common_startup{
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
     cwd     => $directory,
     command => 'sh common_startup.sh',
-  }    
+  }
 }
