@@ -28,6 +28,6 @@
 #
 class galaxy::params {
   $galaxy_branch = 'stable'
-  $createuser = true
+  $create_user = true
   $directory = '/home/galaxy/galaxy-dist/'
 }
