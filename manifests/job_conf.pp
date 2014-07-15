@@ -64,9 +64,8 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::job_conf(
-  $app_directory                      = $galaxy::params::app_directory,
-  $number_of_background_workers       = $galaxy::universe::numbers_of_background_workers,
-  #$number_of_background_workers_array = $galaxy::universe::numbers_of_background_workers_array,
+  $app_directory                = $galaxy::params::app_directory,
+  $number_of_background_workers = $galaxy::universe::numbers_of_background_workers,
   # Runners
   $enable_runner_local  = true,
   $enable_runner_pbs    = false,
