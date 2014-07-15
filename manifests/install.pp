@@ -38,10 +38,11 @@ class galaxy::install(
   #
   # I'm not sure what the best course of action here is. Let the module clutter our logs up or switch to running commands (test for branch/run with onlyif)
   vcsrepo { $install_directory:
-    ensure => present,
-    user => 'galaxy',
+    require  => Class ['galaxy'],
+    ensure   => present,
+    user     => 'galaxy',
     provider => hg,
-    source => 'https://bitbucket.org/galaxy/galaxy-dist/',
+    source   => 'https://bitbucket.org/galaxy/galaxy-dist/',
     revision => $galaxy_branch,
   }
 }
