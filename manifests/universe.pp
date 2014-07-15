@@ -639,6 +639,7 @@ class galaxy::universe(
   }
 
   file { "$app_directory/universe_wsgi.ini":
+    require => Class['galaxy::common_startup'],
     content => template("galaxy/universe_wsgi.ini.erb"),
   }
 }
