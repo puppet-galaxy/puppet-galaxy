@@ -19,7 +19,8 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::service (
-  $directory = $galaxy::params::app_directory
+  $directory = $galaxy::params::app_directory,
+  $wk_config = $galaxy::universe::wk_config,
 ) 
 inherits galaxy::params 
 {   
