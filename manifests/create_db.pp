@@ -12,6 +12,6 @@ class galaxy::create_db {
     cwd     => $app_directory,
     user    => 'galaxy',
     command => 'sh create_db.sh',
-    timeout => 0,
+    timeout => 500,
   }
 }
