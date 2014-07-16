@@ -19,24 +19,26 @@
 
 case "${1:-''}" in
   'start')
-  		log_daemon_msg "Starting Galaxy"
-		<% if @wk_config %>
-		GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --daemon
-		<% else %>
-		<%=@directory%>/run.sh --daemon
-		<% end %>
-		<%=@directory%>/run.sh --daemon
-		log_end_msg 0
+  log_daemon_msg "Starting Galaxy"
+  echo -e "\n";
+  <% if @wk_config %>
+  GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --daemon
+  <% else %>
+  <%=@directory%>/run.sh --daemon
+  <% end %>
+  log_end_msg 0
+
         ;;
   'stop')
-           	log_daemon_msg "Stopping Galaxy"
-		<% if @wk_config %>
-		GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --stop-daemon
-		<% else %>
-		<%= @directory %>/run.sh --stop-daemon
-		<% end %>
-		<%= @directory %>/run.sh --stop-daemon
-		log_end_msg 0
+  log_daemon_msg "Stopping Galaxy"
+  echo -e "\n"
+  <% if @wk_config %>
+  GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --stop-daemon
+  <% else %>
+  <%= @directory %>/run.sh --stop-daemon
+  <% end %>
+  log_end_msg 0
+
         ;;
   'restart')
            # restart commands here
