@@ -84,7 +84,8 @@ class galaxy::job_conf(
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
 
   file { "$app_directory/job_conf.xml":
-    require => Class['galaxy::universe'],
+    require => Class['galaxy::toolshed_conf'],
     content => template("galaxy/job_conf.xml.erb"),
+    owner    => 'galaxy',
   }
 }
