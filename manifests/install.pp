@@ -30,6 +30,7 @@
 class galaxy::install(
   $install_directory = "$galaxy::params::app_directory/",
   $galaxy_branch     = $galaxy::params::galaxy_branch,
+  $galaxy_repository     = $galaxy::params::galaxy_repository,
 ){
 
   # There is a "bug" here in that every puppet run we'll get notifications of switching branches, even though we're not actually making changes. E.g.,
@@ -42,7 +43,7 @@ class galaxy::install(
     ensure   => present,
     user     => 'galaxy',
     provider => hg,
-    source   => 'https://bitbucket.org/galaxy/galaxy-dist/',
+    source   => $galaxy_repository,
     revision => $galaxy_branch,
   }
 }
