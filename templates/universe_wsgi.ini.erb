@@ -109,7 +109,6 @@ cookie_path = <%= @proxy_prefix %>
 
 # -- Database
 
-<%if not @db_config %>
 # By default, Galaxy uses a SQLite database at 'database/universe.sqlite'.  You
 # may use a SQLAlchemy connection string to specify an external database
 # instead.  This string takes many options which are explained in detail in the
@@ -140,10 +139,12 @@ cookie_path = <%= @proxy_prefix %>
 # 'galaxy.model.orm.logging_connection_proxy'
 #database_query_profiling_proxy = False
 
-<% else %>
-database_connection=<%= @db_driver%>://<%= @db_username %>:<%= @db_password %>@<%= @db_host%>:<%= @db_port %>/<%= @db_database %>
+database_connection=<%= @db_connection%>
+
+<% if !@db_driver.eql?"sqlite" %>
 database_engine_option_pool_size = <%= @db_opts_pool_size%>
 database_engine_option_max_overflow = <%= @db_opts_max_overflow%>
+<% end %>
 
 <% if @db_driver.eql?"mysql" %>
 # If using MySQL and the server logs the error "MySQL server has gone away",
@@ -171,7 +172,6 @@ database_engine_option_strategy = threadlocal
 database_query_profiling_proxy = True
 <% else %>
 database_query_profiling_proxy = False
-<% end %>
 <% end %>
 
 # -- Files and directories
