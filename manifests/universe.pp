@@ -96,22 +96,7 @@
 #
 # [*db_driver*]
 #   Database driver to use. Use one of 'postgresql' or 'mysql'. Others have not been tested with this puppet module
-#
-# [*db_username*]
-#   Username to connect to database with. It is recommend you create a separate user for galaxy. We recommend use of the puppetlabs database modules to manage database users
-#
-# [*db_password*]
-#   Password to connect to database with. 
-#
-# [*db_host*]
-#   Host for the database
-#
-# [*db_port*]
-#   Port for the database
-#
-# [*db_database*]
-#   Name of the database (schema in postgres, database name in mysql)
-#
+
 # [*db_opts_pool_size*]
 #   ???
 #
@@ -499,17 +484,10 @@ class galaxy::universe(
   $upstream_gzip = true,
 
   # Database 
-  $db_config = false,
-  $db_driver = 'postgresql',
-  $db_username = 'galaxy',
-  $db_password = 'my-secure-password',
-  $db_host = 'localhost',
-  $db_port = 5432,
-  $db_database = 'galaxydb',
-
+  $db_connection = 'sqlite:///./database/local.sqlite?isolation_level=IMMEDIATE',
+  $db_driver = 'sqlite',
   $db_opts_pool_size = '500',
   $db_opts_max_overflow = 1000,
-
 
   ## Cluster Options ##
   $enable_job_recovery = true,
@@ -639,7 +617,8 @@ class galaxy::universe(
   }
 
   file { "$app_directory/universe_wsgi.ini":
-    require => Class['galaxy::common_startup'],
+    require => Class['galaxy::install'],
     content => template("galaxy/universe_wsgi.ini.erb"),
+    owner    => 'galaxy',
   }
 }
