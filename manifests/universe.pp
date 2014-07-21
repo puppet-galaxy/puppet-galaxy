@@ -468,7 +468,7 @@ class galaxy::universe(
   # Paths
   $tmp_file_dir = 'database/tmp',
   $file_path = 'database/files',
-  $tool_dependency_dir = "$directory/tool_dependencies",
+  $tool_dependency_dir = "$app_directory/tool_dependencies",
   $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file = 'job_conf.xml',
 
@@ -486,7 +486,7 @@ class galaxy::universe(
   # Database 
   $db_connection = 'sqlite:///./database/local.sqlite?isolation_level=IMMEDIATE',
   $db_driver = 'sqlite',
-  $db_opts_pool_size = '500',
+  $db_opts_pool_size = 500,
   $db_opts_max_overflow = 1000,
 
   ## Cluster Options ##
@@ -514,7 +514,7 @@ class galaxy::universe(
   # Admin Users
   $admin_email = "root@localhost",
   $admin_users = [],
-  $require_login = true,
+  $require_login = false,
   $allow_user_creation = true,
   $allow_user_deletion = true,
   $allow_user_impersonation = true,
@@ -541,7 +541,7 @@ class galaxy::universe(
 
   # FTP
   $enable_ftp_upload = true,
-  $ftp_upload_dir = "$directory/database/ftp/",
+  $ftp_upload_dir = "$app_directory/database/ftp/",
   $ftp_upload_site = $fqdn,
   
   # Quotas
