@@ -36,7 +36,7 @@ use=egg:Paste#http
 port=<%= @handler_starting_port_number.to_i + i %>
 host=<%= @handler_host_to_listen_on %>
 use_threadpool=true
-threadpool_workers=<%= @webworker_threadpool_workers %>
+threadpool_workers=<%= @handler_threadpool_workers %>
 <% end %>
 
 <%else%>
@@ -98,8 +98,7 @@ paste.app_factory = galaxy.web.buildapp:app_factory
 
 <% if @use_prefix %>
 filter-with = proxy-prefix
-<% end %>
-<% if @use_prefix %>
+
 # If proxy-prefix is enabled and you're running more than one Galaxy instance
 # behind one hostname, you will want to set this to the same path as the prefix
 # in the filter above.  This value becomes the "path" attribute set in the
@@ -144,31 +143,26 @@ database_connection=<%= @db_connection%>
 <% if !@db_driver.eql?"sqlite" %>
 database_engine_option_pool_size = <%= @db_opts_pool_size%>
 database_engine_option_max_overflow = <%= @db_opts_max_overflow%>
-<% end %>
-
-<% if @db_driver.eql?"mysql" %>
+	<% if @db_driver.eql?"mysql" %>
 # If using MySQL and the server logs the error "MySQL server has gone away",
 # you will want to set this to some positive value (7200 should work).
 database_engine_option_pool_recycle = -1
-<% end %>
-
-<% if @db_driver.eql?"postgresql" %>
+	<% end %>
+	<% if @db_driver.eql?"postgresql" %>
 # If large database query results are causing memory or response time issues in
 # the Galaxy process, leave the result on the server instead.  This option is
 # only available for PostgreSQL and is highly recommended.
 database_engine_option_server_side_cursors = True
-<% end %>
-
-<% if !@db_driver.eql?"sqlite" %>
+	<% end %>
 # Create only one connection to the database per thread, to reduce the
 # connection overhead.  Recommended when not using SQLite:
 database_engine_option_strategy = threadlocal
 <% end %>
 
-<% if @database_query_profiling_proxy %>
 # Log all database transactions, can be useful for debugging and performance
 # profiling.  Logging is done via Python's 'logging' module under the qualname
 # 'galaxy.model.orm.logging_connection_proxy'
+<% if @database_query_profiling_proxy %>
 database_query_profiling_proxy = True
 <% else %>
 database_query_profiling_proxy = False
