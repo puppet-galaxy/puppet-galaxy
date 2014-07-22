@@ -442,7 +442,7 @@
 # Copyright 2014, for the puppet code representing a universe_wsgi.ini resource. 
 #
 class galaxy::universe(
-  $app_directory = $galaxy::params::app_directory,
+  $directory = $galaxy::params::app_directory,
 
   # Worker Configuration
   $wk_config = false,
@@ -466,9 +466,9 @@ class galaxy::universe(
   ],
 
   # Paths
-  $tmp_file_dir = 'database/tmp',
-  $file_path = 'database/files',
-  $tool_dependency_dir = "$app_directory/tool_dependencies",
+  $tmp_file_dir = "$directory/database/tmp",
+  $file_path = "$direcotry/database/files",
+  $tool_dependency_dir = "$directory/tool_dependencies",
   $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file = 'job_conf.xml',
 
@@ -541,7 +541,7 @@ class galaxy::universe(
 
   # FTP
   $enable_ftp_upload = true,
-  $ftp_upload_dir = "$app_directory/database/ftp/",
+  $ftp_upload_dir = "$directory/database/ftp/",
   $ftp_upload_site = $fqdn,
   
   # Quotas
@@ -567,7 +567,7 @@ class galaxy::universe(
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = 'database/whoosh_indexes',
+  $whoosh_index_dir = "$directory/database/whoosh_indexes",
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
@@ -606,7 +606,7 @@ class galaxy::universe(
   $transfer_manager_port = 10000,
 
 
-){
+)inherits galaxy::params{
 
   $handler_starting_port_number = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
@@ -616,7 +616,7 @@ class galaxy::universe(
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
   }
 
-  file { "$app_directory/universe_wsgi.ini":
+  file { "$directory/universe_wsgi.ini":
     require => Class['galaxy::install'],
     content => template("galaxy/universe_wsgi.ini.erb"),
     owner    => 'galaxy',
