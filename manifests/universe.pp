@@ -442,16 +442,14 @@
 # Copyright 2014, for the puppet code representing a universe_wsgi.ini resource. 
 #
 class galaxy::universe(
-  $directory = $galaxy::params::app_directory,
-
   # Worker Configuration
   $wk_config = false,
-
+  
   $number_of_web_workers = 4,
   $webworker_starting_port_number = 8000,
   $webworker_host_to_listen_on = "0.0.0.0",
   $webworker_threadpool_workers = 5,
-
+  
   $number_of_background_workers = 4, 
   $handler_host_to_listen_on = "0.0.0.0",
   $handler_threadpool_workers = 5,
@@ -466,9 +464,9 @@ class galaxy::universe(
   ],
 
   # Paths
-  $tmp_file_dir = "$directory/database/tmp",
-  $file_path = "$direcotry/database/files",
-  $tool_dependency_dir = "$directory/tool_dependencies",
+  $tmp_file_dir = 'database/tmp',
+  $file_path = 'database/files',
+  $tool_dependency_dir = "$galaxy::params::directory/tool_dependencies",
   $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file = 'job_conf.xml',
 
@@ -510,7 +508,6 @@ class galaxy::universe(
   $amqp_ctl_path = '/path/to/rabbitmqctl',
 
   ## Administration  and Security##
-
   # Admin Users
   $admin_email = "root@localhost",
   $admin_users = [],
@@ -525,7 +522,6 @@ class galaxy::universe(
   $sanitize_all_html = true,
   $id_secret = 'my-secret-random-id',
 
-
   ## Authentication ##
   # Remote User Config
   $remote_user = false,
@@ -536,17 +532,14 @@ class galaxy::universe(
   $enable_openid = false,
   $openid_config_file = 'openid_conf.xml',
 
-
   ## Access and Data ##
-
   # FTP
   $enable_ftp_upload = true,
-  $ftp_upload_dir = "$directory/database/ftp/",
+  $ftp_upload_dir = 'database/ftp/',
   $ftp_upload_site = $fqdn,
   
   # Quotas
   $enable_quotas = true,
-
 
   ## Debug ##
   $log_level = 'INFO',
@@ -563,20 +556,17 @@ class galaxy::universe(
   $debug_use_heartbeat = false,
   $debug_use_memdump = false,
 
-
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = "$directory/database/whoosh_indexes",
+  $whoosh_index_dir = 'database/whoosh_indexes',
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
   $lucene_fulltext_noindex_filetypes = ['bam','sam','wig','bigwig','fasta','fastq','fastqsolexa','fastqillumina','fastqsanger'],
   $lucene_fulltext_url = 'https://localhost/lucene/',
   
-  
   ## OTHER ## 
-
   # MISC
   $retry_metadata_internally = true,
 
@@ -604,13 +594,11 @@ class galaxy::universe(
   # Transfer Manager
   $use_transfer_manager = false,
   $transfer_manager_port = 10000,
-
-
-)inherits galaxy::params{
-
-  $handler_starting_port_number = $webworker_starting_port_number+$number_of_background_workers
+){
+  $directory                          = $galaxy::params::app_directory,
+  $handler_starting_port_number       = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
-  $number_of_web_workers_array = range("0", -1+$number_of_web_workers)
+  $number_of_web_workers_array        = range("0", -1+$number_of_web_workers)
   
   if($id_secret == 'my-secret-random-id'){
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
