@@ -10,7 +10,8 @@ class galaxy::common_startup{
     require => Class['galaxy::universe'],
     source  => '/etc/puppet/modules/galaxy/files/common_startup.sh',
     mode    => 'a=r+w+x',
-    owner   => 'galaxy'
+    owner   => 'galaxy',
+    group   => 'galaxy',
   }->
   exec { 'Common Startup':
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
