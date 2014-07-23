@@ -86,6 +86,7 @@ class galaxy::job_conf(
   file { "$app_directory/job_conf.xml":
     require => Class['galaxy::toolshed_conf'],
     content => template("galaxy/job_conf.xml.erb"),
-    owner    => 'galaxy',
+    owner   => 'galaxy',
+    group   => 'galaxy',
   }
 }
