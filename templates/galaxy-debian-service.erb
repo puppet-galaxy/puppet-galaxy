@@ -22,9 +22,9 @@ case "${1:-''}" in
   log_daemon_msg "Starting Galaxy"
   echo -e "\n";
   <% if @wk_config %>
-  GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --daemon
+  su - galaxy -c 'GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --daemon'
   <% else %>
-  <%=@directory%>/run.sh --daemon
+  su - galaxy -c '<%=@directory%>/run.sh --daemon'
   <% end %>
   log_end_msg 0
 
@@ -33,9 +33,9 @@ case "${1:-''}" in
   log_daemon_msg "Stopping Galaxy"
   echo -e "\n"
   <% if @wk_config %>
-  GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --stop-daemon
+  su - galaxy -c 'GALAXY_RUN_ALL=1 <%= @directory %>/run.sh --stop-daemon'
   <% else %>
-  <%= @directory %>/run.sh --stop-daemon
+  su - galaxy -c '<%= @directory %>/run.sh --stop-daemon'
   <% end %>
   log_end_msg 0
 
