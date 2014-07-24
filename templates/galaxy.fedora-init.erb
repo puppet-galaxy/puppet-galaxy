@@ -10,7 +10,7 @@
 
 #--- config
 
-SERVICE_NAME="galaxy"
+SERVICE_NAME="Galaxy"
 RUN_AS="galaxy"
 RUN_IN="<%= @directory %>"
 
@@ -18,39 +18,22 @@ RUN_IN="<%= @directory %>"
 
 start() {
 	echo "Starting $SERVICE_NAME... "
-	cmd="cd $RUN_IN && sh run.sh --daemon"
-	case "$(id -un)" in
-		$RUN_AS)
-			eval "$cmd"
-			;;
-		root)
-			su - $RUN_AS -c "$cmd"
-			;;
-		*)
-			echo "*** ERROR *** must be $RUN_AS or root in order to control this service" >&2
-			exit 1
-	esac
-	echo "...done."
+	 <% if @wk_config %>
+  	su - $RUN_AS -c 'GALAXY_RUN_ALL=42 <%= @directory %>/run.sh --daemon'
+        <% else %>
+        su - $RUN_AS -c '<%= @directory %>/run.sh --daemon'
+        <% end %>	
+        echo "...done."
 }
 
 stop() {
 	echo -n "Stopping $SERVICE_NAME... "
-	
-	cmd="cd $RUN_IN && sh run.sh --stop-daemon"
-
-	case "$(id -un)" in
-		$RUN_AS)
-			eval "$cmd"
-			;;
-		root)
-			su - $RUN_AS -c "$cmd"
-			;;
-		*)
-			echo "*** ERROR *** must be $RUN_AS or root in order to control this service" >&2
-			exit 1
-	esac
-	
-	echo "done."
+         <% if @wk_config %>
+  	su - $RUN_AS -c 'GALAXY_RUN_ALL=42 <%= @directory %>/run.sh --stop-daemon'
+        <% else %>
+        su - $RUN_AS -c '<%= @directory %>/run.sh --stop-daemon'
+        <% end %>	
+        echo "done."
 }
 
 status() {
