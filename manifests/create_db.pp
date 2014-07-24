@@ -11,6 +11,7 @@ class galaxy::create_db {
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
     cwd     => $app_directory,
     user    => 'galaxy',
+    group   => 'galaxy',
     command => 'sh create_db.sh',
     timeout => 500,
   }
