@@ -16,7 +16,7 @@ class galaxy::common_startup{
   exec { 'Common Startup':
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
     cwd     => $directory,
-    command => 'sh common_startup.sh',
+    command => "$directory/common_startup.sh",
     user    => 'galaxy',
     group   => 'galaxy',
     require => File["$directory/common_startup.sh"],
