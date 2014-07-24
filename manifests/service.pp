@@ -26,7 +26,7 @@ define galaxy::service (
   include supervisord
   supervisord::program { "galaxy_uwsgi":
     command     => "uwsgi --plugin python --ini-paste $directory/universe_wsgi.ini",
-    directory => "/home/galaxy/galaxy/",
+    directory => $directory,
     umask => "022",
     autostart => true,
     autorestart => "true",
