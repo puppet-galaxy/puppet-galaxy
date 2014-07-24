@@ -39,7 +39,7 @@ define galaxy::service (
   }
   supervisord::program { "handler":
     command     => "python ./scripts/paster.py serve universe_wsgi.ini --server-name=handler%(process_num)s --pid-file=$directory/handler%(process_num)s.pid --log-file=$directory/handler%(process_num)s.log",
-    directory => $direcotry,
+    directory => $directory,
     process_name => "handler%(process_num)s",
     numprocs => 4,
     umask => "022",
