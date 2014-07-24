@@ -50,8 +50,8 @@ define galaxy::instance (
     galaxy_branch => $galaxy_branch,
   } -> galaxy::first_run{ "$name":
     directory => "$directory"
-  #} -> galaxy::service { "$name":
-  #  directory => "$directory"
+  } -> galaxy::service { "$name":
+    directory => "$directory"
   }
 
   # TODO: refresh the service
