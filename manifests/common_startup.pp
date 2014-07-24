@@ -18,6 +18,7 @@ class galaxy::common_startup{
     cwd     => $directory,
     command => 'sh common_startup.sh',
     user    => 'galaxy',
+    group   => 'galaxy',
     require => File["$directory/common_startup.sh"],
   }
 }
