@@ -15,7 +15,7 @@
 #
 class galaxy::dependencies(){
 
-  $packages = ['mercurial', 'python', 'tar', 'libapache2-mod-uwsgi', 'python-pip', 'python-virtualenv']
+  $packages = ['mercurial', 'python', 'tar', 'libapache2-mod-uwsgi']
 
   package { $packages:
     ensure => installed,
@@ -27,4 +27,14 @@ class galaxy::dependencies(){
     }
   }
 
+  class { 'python':
+    version => 'system',
+    pip => true,
+    dev => true,
+    virtualenv => true
+  }
+
+  python::pip { 'uWSGI':
+    pkgname => 'uWSGI',
+  }
 }
