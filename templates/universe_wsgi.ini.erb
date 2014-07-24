@@ -25,12 +25,13 @@
 socket = <%= @uwsgi_socket %>
 <% if @uwsgi_stats_enable %>
 stats = <%= @uwsgi_stats_socket %>
-<% endif %>
+<% end %>
 processes = <%= @uwsgi_processes %>
 threads = <%= @uwsgi_threads %>
 master = True
 logto = <%= @uwsgi_log %>
 pythonpath = <%= @directory %>/lib
+
 
 
 <% for i in @number_of_background_workers_array do %>
