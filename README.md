@@ -10,7 +10,6 @@
     * [Defined Types](#defined-types)
         * [Type: galaxy::first_run](#type-galaxyfirst_run)
         * [Type: galaxy::install](#type-galaxyinstall)
-        * [Type: galaxy::instance](#type-galaxyinstance)
         * [Type: galaxy::job_conf](#type-galaxyjob_conf)
         * [Type: galaxy::service](#type-galaxyservice)
         * [Type: galaxy::toolshed_conf](#type-galaxytoolshed_conf)
@@ -52,13 +51,6 @@ it has serving one time.
 
 ####Type: `galaxy::install`
 This type download the remote repository from bickbuckets.org/galaxy/galaxy-dist with mercurial.
-
-####Type: `galaxy::instance`
-This type which represents a single instance of a galaxy server. This was done
-
-this way in the event that you have more than one galaxy server running on a
-
-single host (e.g., development and production)
 
 ####Type: `galaxy::job_conf`
 This type writes the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp

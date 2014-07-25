@@ -27,10 +27,10 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::params {
-  $galaxy_branch = 'release_2014.06.02'
-  $galaxy_repository = 'https://bitbucket.org/galaxy/galaxy-dist/'
-  $create_user   = true
-  $app_directory = '/home/galaxy/galaxy-dist'
-  $home_direcory = '/home/galaxy'
+  $galaxy_branch = hiera('galaxy::universe::galaxy_branch', 'release_2014.06.02')
+  $galaxy_repository = hiera('galaxy::universe:;galaxy_repository', 'https://bitbucket.org/galaxy/galaxy-dist/')
+  $create_user   = hiera('galaxy::universe::create_user', true)
+  $app_directory = hiera('galaxy::universe::app_directory', '/home/galaxy/galaxy-dist')
+  $home_direcory = hiera('galaxy::universe::home_directory', '/home/galaxy')
   $directory = '/home/galaxy/galaxy-dist/'
 }
