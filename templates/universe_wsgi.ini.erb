@@ -20,15 +20,19 @@
 # Configuration of the internal HTTP server.
 #	
 <%if @wk_config%>
-<% for i in @number_of_web_workers_array do %>
-[server:web<%= i %>]
-use=egg:Paste#http
-port=<%= @webworker_starting_port_number.to_i + i %>
-host=<%= @webworker_host_to_listen_on %>
-use_threadpool=true
-threadpool_workers=<%= @webworker_threadpool_workers %>
 
+[uwsgi]
+socket = <%= @uwsgi_socket %>
+<% if @uwsgi_stats_enable %>
+stats = <%= @uwsgi_stats_socket %>
 <% end %>
+processes = <%= @uwsgi_processes %>
+threads = <%= @uwsgi_threads %>
+master = True
+logto = <%= @uwsgi_log %>
+pythonpath = <%= @directory %>/lib
+
+
 
 <% for i in @number_of_background_workers_array do %>
 [server:handler<%= i %>]

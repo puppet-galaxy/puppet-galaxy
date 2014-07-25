@@ -8,7 +8,7 @@
 #
 # [*galaxy_branch*]
 #   Which branch of galaxy's development to pull from. Options are "stable" and
-#   "deafult", where default is the primary branch for development work. 
+#   "deafult", where default is the primary branch for development work.
 #
 # [*directory*]
 #   The main directory for galaxy instances that will be installed on this
@@ -21,7 +21,7 @@
 #
 # === Examples
 #
-#  galaxy::instance { 'production': 
+#  galaxy::instance { 'production':
 #    custom_toolsheds => [
 #      { name => "My Toolshed", url => "https://localhost/toolshed/" }
 #    ],
@@ -50,21 +50,21 @@ define galaxy::instance (
     galaxy_branch => $galaxy_branch,
   } -> galaxy::first_run{ "$name":
     directory => "$directory"
-  #} -> galaxy::service { "$name": 
-  #  directory => "$directory"
+  } -> galaxy::service { "$name":
+    directory => "$directory"
   }
-  
+
   # TODO: refresh the service
   galaxy::toolshed_conf{ "$name":
     directory => "$directory",
     custom_toolsheds => $custom_toolsheds,
-  } 
+  }
   galaxy::job_conf { "$name":
     directory => "$directory",
-  } 
-  
+  }
+
   galaxy::universe{ "$name":
     directory => "$directory",
     id_secret => $id_secret,
-  } 
+  }
 }

@@ -18,27 +18,40 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-class galaxy::service (
-  $directory = $galaxy::params::app_directory,
+define galaxy::service (
+  $directory = $galaxy::params::directory,
   $wk_config = $galaxy::universe::wk_config,
-) 
-inherits galaxy::params 
-{   
-  case $osfamily {
-    Debian: { $source='galaxy/galaxy-debian-service.erb'}
-    RedHat: { $source='galaxy/galaxy.fedora-init.erb'}
-    default: {fail('no init script for this osfamily')}
+){
+
+  include supervisord
+  supervisord::program { "galaxy_uwsgi":
+    command     => "uwsgi --plugin python --ini-paste $directory/universe_wsgi.ini",
+    directory => $directory,
+    umask => "022",
+    autostart => true,
+    autorestart => "true",
+    startsecs => 10,
+    user => galaxy,
+    numprocs => 1,
+    environment => {
+      "PYTHONPATH"   => "$directory/eggs/PasteDeploy-1.5.0-py2.7.egg",
+    }
   }
-  file { '/etc/init.d/galaxy-service':
-    content => template($source),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => Class['galaxy::create_db']
-  }-> 
-  service { 'galaxy-service' :
-    ensure  => 'running',
-    enable  => true,
-    require => File['/etc/init.d/galaxy-service'],
+  supervisord::program { "handler":
+    command     => "python ./scripts/paster.py serve universe_wsgi.ini --server-name=handler%(process_num)s --pid-file=$directory/handler%(process_num)s.pid --log-file=$directory/handler%(process_num)s.log",
+    directory => $directory,
+    process_name => "handler%(process_num)s",
+    numprocs => 4,
+    umask => "022",
+    autostart => true,
+    autorestart => "true",
+    startsecs => 15,
+    user => galaxy,
+    environment => {
+      "PYTHON_EGG_CACHE"   => "/home/galaxy/.python-eggs"
+    }
+  }
+  supervisord::group { "galaxy":
+    programs  => ["handler"],
   }
 }

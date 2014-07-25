@@ -54,7 +54,7 @@
 #      { id => 'condor', runner => 'condor' }
 #    ]
 #  }
-#    
+#
 # === Authors
 #
 # Eric Rasche <rasche.eric@yandex.ru>
@@ -79,8 +79,8 @@ class galaxy::job_conf(
     { id => 'local', runner => 'local' }
   ]
 ){
-  
-  ## Currently copy/pasted from universe.pp, need to refactor into settings once.
+
+  # Currently copy/pasted from universe.pp, need to refactor into settings once.
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
 
   file { "$app_directory/job_conf.xml":
