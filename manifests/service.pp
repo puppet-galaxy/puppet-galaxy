@@ -18,9 +18,9 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-define galaxy::service (
-  $directory = $galaxy::params::directory,
-  $wk_config = $galaxy::universe::wk_config,
+class galaxy::service (
+  $directory = hiera("galaxy::universe::app_directory"),
+  $wk_config = hiera("galaxy::universe::wk_config"),
 ){
 
   include supervisord

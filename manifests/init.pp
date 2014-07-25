@@ -35,11 +35,11 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy (
-  $galaxy_branch = $galaxy::params::galaxy_branch,
-  $create_user   = $galaxy::params::create_user,
-  $directory     = $galaxy::params::directory,
-) inherits galaxy::params {
-  class { 'galaxy::dependencies': }
+  $galaxy_branch = hiera("galaxy::universe::galaxy_branch", "stable"),
+  $create_user   = hiera("galaxy::universe::create_user", true),
+  $directory     = hiera("galaxy::universe::app_directory"),
+) {
+  include galaxy::dependencies
   if($create_user){
     user { 'galaxy':
       ensure     => present,

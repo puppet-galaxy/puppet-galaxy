@@ -463,7 +463,7 @@ class galaxy::universe(
   # Paths
   $tmp_file_dir = 'database/tmp',
   $file_path = 'database/files',
-  $tool_dependency_dir = "$galaxy::params::directory/tool_dependencies",
+  $tool_dependency_dir = hiera("galaxy::universe::tool_dependency_dir"),
   $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file = 'job_conf.xml',
 
@@ -594,7 +594,7 @@ class galaxy::universe(
   $use_transfer_manager = false,
   $transfer_manager_port = 10000,
 ){
-  $directory                          = $galaxy::params::app_directory
+  $directory                          = hiera("galaxy::universe::app_directory")
   $handler_starting_port_number       = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
   $number_of_web_workers_array = range("0", -1+$number_of_web_workers)
