@@ -60,13 +60,8 @@
 #
 # [*x_accel_redirect*]
 #   The same download handling can be done by nginx using X-Accel-Redirect.
-<<<<<<< HEAD
-#   This should be set to the path classd in the nginx config as an internal
-#   redirect with access to Galaxy's data files 
-=======
 #   This should be set to the path defined in the nginx config as an internal
 #   redirect with access to Galaxy's data files
->>>>>>> Fixed whitespace
 #
 # [*x_archive_files*]
 #   nginx can make use of mod_zip to create zip files containing multiple
@@ -92,26 +87,7 @@
 #
 # [*db_driver*]
 #   Database driver to use. Use one of 'postgresql' or 'mysql'. Others have not been tested with this puppet module
-<<<<<<< HEAD
 
-=======
-#
-# [*db_username*]
-#   Username to connect to database with. It is recommend you create a separate user for galaxy. We recommend use of the puppetlabs database modules to manage database users
-#
-# [*db_password*]
-#   Password to connect to database with.
-#
-# [*db_host*]
-#   Host for the database
-#
-# [*db_port*]
-#   Port for the database
-#
-# [*db_database*]
-#   Name of the database (schema in postgres, database name in mysql)
-#
->>>>>>> Fixed whitespace
 # [*db_opts_pool_size*]
 #   ???
 #
