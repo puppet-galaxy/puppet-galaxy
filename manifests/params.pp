@@ -32,6 +32,5 @@ class galaxy::params {
   $create_user   = true
   $app_directory = '/home/galaxy/galaxy-dist'
   $home_direcory = '/home/galaxy'
-  $create_user = true
   $directory = '/home/galaxy/galaxy-dist/'
 }
