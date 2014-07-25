@@ -23,15 +23,6 @@
 # [*handler_threadpool_workers*]
 #   Number of threads in the handler threadpool (per worker)
 #
-# [*number_of_web_workers*]
-#   Number of web workers to start, to service web requests
-#
-# [*webworker_host_to_listen_on*]
-#   Which host to listen on for web workers
-#
-# [*webworker_threadpool_workers*]
-#   Number of threads in the web handler threadpool (per worker)
-#
 # [*use_prefix*]
 #   Set to true if you plan to run galaxy under a prefix like "/galaxy". This
 #   option is commonly used if you're hosting multiple services on a single
@@ -468,7 +459,14 @@
 class galaxy::universe(
   # Worker Configuration
   $wk_config = false,
-  
+
+  $uwsgi_socket = "127.0.0.1:4001",
+  $uwsgi_stats_enable = true,
+  $uwsgi_stats_socket = "127.0.0.9191",
+  $uwsgi_processes = 4,
+  $uwsgi_threads = 4,
+  $uwsgi_log = "uwsgi.log",
+
   $number_of_web_workers = 4,
   $webworker_starting_port_number = 8000,
   $webworker_host_to_listen_on = "0.0.0.0",
