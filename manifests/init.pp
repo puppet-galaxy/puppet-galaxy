@@ -39,7 +39,6 @@ class galaxy (
   $create_user   = hiera("galaxy::universe::create_user", true),
   $directory     = hiera("galaxy::universe::app_directory"),
 ) {
-  include galaxy::dependencies
   if($create_user){
     user { 'galaxy':
       ensure     => present,

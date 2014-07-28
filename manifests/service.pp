@@ -23,7 +23,10 @@ class galaxy::service (
   $wk_config = hiera("galaxy::universe::wk_config"),
 ){
 
-  include supervisord
+  class { "supervisord":
+    install_pip  => true,
+    require => Class["galaxy::dependencies"],
+  } ->
   supervisord::program { "galaxy_uwsgi":
     command     => "uwsgi --plugin python --ini-paste $directory/universe_wsgi.ini",
     directory => $directory,
@@ -36,7 +39,7 @@ class galaxy::service (
     environment => {
       "PYTHONPATH"   => "$directory/eggs/PasteDeploy-1.5.0-py2.7.egg",
     }
-  }
+  } ->
   supervisord::program { "handler":
     command     => "python ./scripts/paster.py serve universe_wsgi.ini --server-name=handler%(process_num)s --pid-file=$directory/handler%(process_num)s.pid --log-file=$directory/handler%(process_num)s.log",
     directory => $directory,
@@ -50,7 +53,7 @@ class galaxy::service (
     environment => {
       "PYTHON_EGG_CACHE"   => "/home/galaxy/.python-eggs"
     }
-  }
+  } ->
   supervisord::group { "galaxy":
     programs  => ["handler"],
   }

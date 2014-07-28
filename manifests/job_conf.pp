@@ -68,11 +68,11 @@ class galaxy::job_conf(
   $number_of_background_workers = hiera("galaxy::runners::count",2),
   # Runners
   $enable_runner_local  = hiera("galaxy::runners::local::enable", true),
-  $enable_runner_pbs    = hiera("galaxy::runners::pbs::enable", true),
-  $enable_runner_drmaa  = hiera("galaxy::runners::drmaa::enable", true),
-  $enable_runner_lwr    = hiera("galaxy::runners::lwr::enable", true),
-  $enable_runner_cli    = hiera("galaxy::runners::cli::enable", true),
-  $enable_runner_condor = hiera("galaxy::runners::condor::enable", true),
+  $enable_runner_pbs    = hiera("galaxy::runners::pbs::enable", false),
+  $enable_runner_drmaa  = hiera("galaxy::runners::drmaa::enable", false),
+  $enable_runner_lwr    = hiera("galaxy::runners::lwr::enable", false),
+  $enable_runner_cli    = hiera("galaxy::runners::cli::enable", false),
+  $enable_runner_condor = hiera("galaxy::runners::condor::enable", false),
   $default_worker_threads = hiera("galaxy::runners::count"),
   $default_destination = hiera("galaxy::runners::destination::default", "local"),
   $destinations = [
