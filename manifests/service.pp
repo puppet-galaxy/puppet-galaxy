@@ -34,7 +34,7 @@ inherits galaxy::params
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    require => Class['galaxy::create_db']
+    require => Class['galaxy::manage_tools']
   }-> 
   service { 'galaxy-service' :
     ensure  => 'running',
