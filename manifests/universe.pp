@@ -70,7 +70,7 @@
 # [*x_accel_redirect*]
 #   The same download handling can be done by nginx using X-Accel-Redirect.
 #   This should be set to the path classd in the nginx config as an internal
-#   redirect with access to Galaxy's data files 
+#   redirect with access to Galaxy's data files
 #
 # [*x_archive_files*]
 #   nginx can make use of mod_zip to create zip files containing multiple
@@ -88,7 +88,7 @@
 #   (Currently not enabled!) This value overrides the action set on the file
 #   upload form, e.g. the web path where the nginx_upload_module has been
 #   configured to intercept upload requests.
-#   
+#
 # [*upstream_gzip*]
 #   If using compression in the upstream proxy server, use this option to
 #   disable gzipping of library .tar.gz and .zip archives, since the proxy
@@ -107,7 +107,7 @@
 #   enable job recovery (if galaxy is restarted while cluster jobs are running,
 #   it can "recover" them when it starts). this is not safe to use if you are
 #   running more than one galaxy server using the same database.
-#   
+#
 # [*outputs_to_working_directory*]
 #   if (for example) you run on a cluster and your datasets (by default,
 #   database/files/) are mounted read-only, this option will override tool
@@ -122,7 +122,7 @@
 #   will retry the number of times specified below, waiting 1 second between
 #   tries. for nfs, you may want to try the -noac mount option (linux) or
 #   -actimeo=0 (solaris).
-#   
+#
 # [*cleanup_job*]
 #   clean up various bits of jobs left on the filesystem after completion.
 #   these bits include the job working directory, external metadata temporary
@@ -148,7 +148,6 @@
 #   set to true, it will only happen once per iteration of the handler queue.
 #   although better for performance due to reduced queries, the tradeoff is a
 #   greater possibility that jobs will be dispatched past the configured limits
-#   
 #
 # [*use_amqp_server*]
 #   Galaxy uses AMQ protocol to receive messages from external sources like bar
@@ -156,34 +155,25 @@
 #   For Galaxy to receive messages from a message queue the RabbitMQ server has
 #   to be set up with a user account and other parameters listed below. The
 #   'host' and 'port' fields should point to where the RabbitMQ server is
-#   running. 
+#   running.
 #
 # [*amqp_host*]
-#   
 #
 # [*amqp_port*]
-#   
 #
 # [*amqp_userid*]
-#   
 #
 # [*amqp_password*]
-#   
 #
 # [*amqp_virtual_host*]
-#   
 #
 # [*amqp_queue*]
-#   
 #
 # [*amqp_exchange*]
-#   
 #
 # [*amqp_routing_key*]
-#   
 #
 # [*amqp_ctl_path*]
-#   
 #
 #
 # [*admin_email*]
@@ -203,7 +193,7 @@
 # [*allow_user_creation*]
 #   allow unregistered users to create new accounts (otherwise, they will have
 #   to be created by an admin).
-#   
+#
 # [*allow_user_deletion*]
 #   allow administrators to delete accounts.
 #
@@ -220,29 +210,29 @@
 #   it to be private. does not affect existing users and data, only ones
 #   created after this option is set. users may still change their default
 #   back to public.
-#   
+#
 #
 # [*sanitize_all_html*]
 #   By default, all tool output served as 'text/html' will be sanitized
 #   thoroughly. This can be disabled if you have special tools that require
 #   unaltered output.
-#   
+#
 #
 # [*id_secret*]
 #   Galaxy encodes various internal values when these values will be output in
 #   some format (for example, in a URL or cookie). You should set a key to be
 #   used by the algorithm that encodes and decodes these values. It can be any
 #   string. If left unchanged, anyone could construct a cookie that would
-#   grant them access to others' sessions. 
+#   grant them access to others' sessions.
 #   (Tip: use `openssl rand -hex 32` to generate one)
-#   
+#
 #
 # [*remote_user*]
 #   User authentication can be delegated to an upstream proxy server (usually
 #   Apache). The upstream proxy should set a REMOTE_USER header in the request.
 #   Enabling remote user disables regular logins. For more information, see:
 #   http://wiki.g2.bx.psu.edu/Admin/Config/Apache%20Proxy
-#   
+#
 #
 # [*remote_user_maildomain*]
 #   If use_remote_user is enabled and your external authentication method just
@@ -263,10 +253,10 @@
 # [*enable_ftp_upload*]
 #   enable galaxy's "upload via ftp" interface.  you'll need to install and
 #   configure an ftp server (we've used proftpd since it can use galaxy's
-#   database for authentication).  
+#   database for authentication).
 #
 #   See the following:
-#   https://wiki.galaxyproject.org/Admin/Config/Upload%20via%20FTP 
+#   https://wiki.galaxyproject.org/Admin/Config/Upload%20via%20FTP
 #   https://wiki.galaxyproject.org/Admin/Config/ProFTPd_with_AD
 #
 # [*ftp_upload_dir*]
@@ -419,7 +409,7 @@
 #
 # === Examples
 #
-#  galaxy::universe { 'production': 
+#  galaxy::universe { 'production':
 #     ui_branding => "ACME",
 #     remote_user => true,
 #     remote_user_maildomain => "EXAMPLE.COM",
@@ -439,18 +429,18 @@
 #
 # === Copyright
 #
-# Copyright 2014, for the puppet code representing a universe_wsgi.ini resource. 
+# Copyright 2014, for the puppet code representing a universe_wsgi.ini resource.
 #
 class galaxy::universe(
   # Worker Configuration
   $wk_config = false,
-  
+
   $number_of_web_workers = 4,
   $webworker_starting_port_number = 8000,
   $webworker_host_to_listen_on = "0.0.0.0",
   $webworker_threadpool_workers = 5,
-  
-  $number_of_background_workers = 4, 
+
+  $number_of_background_workers = 4,
   $handler_host_to_listen_on = "0.0.0.0",
   $handler_threadpool_workers = 5,
 
@@ -467,6 +457,8 @@ class galaxy::universe(
   $tmp_file_dir        = "$galaxy::params::app_directory/database/tmp",
   $file_path           = "$galaxy::params::app_directory/database/files",
   $tool_dependency_dir = "$galaxy::params::app_directory/tool_dependencies",
+  $cluster_files_dir   = "$galaxy::params::app_directory/database/pbs",
+  $job_working_dir     = "$galaxy::params::app_directory/database/job_working_directory",
   $tool_config_files   = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file     = 'job_conf.xml',
 
@@ -481,7 +473,7 @@ class galaxy::universe(
   #$nginx_upload_path = '',
   $upstream_gzip = true,
 
-  # Database 
+  # Database
   $db_connection = 'sqlite:///./database/local.sqlite?isolation_level=IMMEDIATE',
   $db_driver = 'sqlite',
   $db_opts_pool_size = 500,
@@ -537,7 +529,7 @@ class galaxy::universe(
   $enable_ftp_upload = true,
   $ftp_upload_dir = "$galaxy::params::app_directory/database/ftp/",
   $ftp_upload_site = $fqdn,
-  
+
   # Quotas
   $enable_quotas = true,
 
@@ -565,8 +557,8 @@ class galaxy::universe(
   $lucene_fulltext_max_size = 500,
   $lucene_fulltext_noindex_filetypes = ['bam','sam','wig','bigwig','fasta','fastq','fastqsolexa','fastqillumina','fastqsanger'],
   $lucene_fulltext_url = 'https://localhost/lucene/',
-  
-  ## OTHER ## 
+
+  ## OTHER ##
   # MISC
   $retry_metadata_internally = true,
 
@@ -599,7 +591,7 @@ class galaxy::universe(
   $handler_starting_port_number       = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
   $number_of_web_workers_array        = range("0", -1+$number_of_web_workers)
-  
+
   if($id_secret == 'my-secret-random-id'){
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
   }
