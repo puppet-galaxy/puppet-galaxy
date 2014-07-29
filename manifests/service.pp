@@ -23,31 +23,31 @@ class galaxy::service (
   $wk_config = $galaxy::universe::wk_config,
 
   include supervisord
-  supervisord::program { "galaxy_uwsgi":
-    command     => "uwsgi --plugin python --ini-paste $directory/universe_wsgi.ini",
-    directory => $directory,
-    umask => "022",
-    autostart => true,
-    autorestart => "true",
-    startsecs => 10,
-    user => galaxy,
-    numprocs => 1,
+  supervisord::program { 'galaxy_uwsgi':
+    command     => 'uwsgi --plugin python --ini-paste $directory/universe_wsgi.ini',
+    directory   => $directory,
+    umask       => '022',
+    autostart   => true,
+    autorestart => true,
+    startsecs   => 10,
+    user        => galaxy,
+    numprocs    => 1,
     environment => {
-      "PYTHONPATH"   => "$directory/eggs/PasteDeploy-1.5.0-py2.7.egg",
+      "PYTHONPATH" => "$directory/eggs/PasteDeploy-1.5.0-py2.7.egg",
     }
   }
   supervisord::program { "handler":
-    command     => "python ./scripts/paster.py serve universe_wsgi.ini --server-name=handler%(process_num)s --pid-file=$directory/handler%(process_num)s.pid --log-file=$directory/handler%(process_num)s.log",
-    directory => $directory,
+    command      => "python ./scripts/paster.py serve universe_wsgi.ini --server-name=handler%(process_num)s --pid-file=$directory/handler%(process_num)s.pid --log-file=$directory/handler%(process_num)s.log",
+    directory    => $directory,
     process_name => "handler%(process_num)s",
-    numprocs => 4,
-    umask => "022",
-    autostart => true,
-    autorestart => "true",
-    startsecs => 15,
-    user => galaxy,
-    environment => {
-      "PYTHON_EGG_CACHE"   => "/home/galaxy/.python-eggs"
+    numprocs     => 4,
+    umask        => '022',
+    autostart    => true,
+    autorestart  => true,
+    startsecs    => 15,
+    user         => galaxy,
+    environment  => {
+      "PYTHON_EGG_CACHE"  => "/home/galaxy/.python-eggs"
     }
   }
   supervisord::group { "galaxy":
