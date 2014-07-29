@@ -357,18 +357,57 @@ terms_url = <%= @ui_extra_terms_url %>
 <% end %>
 
 # Serve static content, which must be enabled if you're not serving it via a
-#nginx_upload_store = True
-  <% end %>
-  <% if @nginx_upload_path %>
-#nginx_upload_path = True
-  <% end %>
+# proxy server. These options should be self explanatory and so are not
+# # documented individually. You can use these paths (or ones in the proxy
+# # server) to point to your own styles.
+# static_enabled = True
+# static_cache_time = 360
+# static_dir = %(here)s/static/
+# static_images_dir = %(here)s/static/images
+# static_favicon_dir = %(here)s/static/favicon.ico
+# static_scripts_dir = %(here)s/static/scripts/
+# static_style_dir = %(here)s/static/june_2007_style/blue
+# static_robots_txt = %(here)s/static/robots.txt
+#
+# # Pack javascript at launch (/static/scripts/*.js)
+# # This only happens if the modified timestamp of the source .js is newer
+# # than the version (if it exists) in /static/scripts/packed/
+# # Note that this requires java > 1.4 for executing yuicompressor.jar
+# #pack_scripts = False
+#
+# <% if @cloud_enable_launch %>
+	# enable_cloud_launch = True
+	# cloudlaunch_default_ami = <%= @cloud_ami %>
+	# <% end %>
+# <%#
+# # -- Advanced proxy features
+#
+# # For help on configuring the Advanced proxy features, see:
+# # http://usegalaxy.org/production
+%>
+<% if @webserver.eql?"apache" %>
+	<% if @xsendfile %>
+	 	#apache_xsendfile = True
+	<% end %>
+<% else if @webserver.eql?"nginx" %>
+	<% if @x_accel_redirect %>
+		#nginx_x_accel_redirect_base = True
+	<% end %>
+	<% if @x_archive_files %>
+		#nginx_x_archive_files_base = True
+        <% end %>
+	<% if @nginx_upload_store %>
+		#nginx_upload_store = True
+  	<% end %>
+  	<% if @nginx_upload_path %>
+		#nginx_upload_path = True
+  	<% end %>
 <% end %>
 <% end %>
 
 <% if @upstream_gzip %>
 upstream_gzip = true
 <% end %>
-
 
 # -- Logging and Debugging
 
