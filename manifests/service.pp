@@ -19,9 +19,8 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::service (
-  $directory = hiera("galaxy::universe::app_directory"),
-  $wk_config = hiera("galaxy::universe::wk_config"),
-){
+  $directory = $galaxy::params::app_directory,
+  $wk_config = $galaxy::universe::wk_config,
 
   include supervisord
   supervisord::program { "galaxy_uwsgi":

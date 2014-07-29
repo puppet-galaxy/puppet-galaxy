@@ -60,7 +60,11 @@
 #
 # [*x_accel_redirect*]
 #   The same download handling can be done by nginx using X-Accel-Redirect.
+<<<<<<< HEAD
 #   This should be set to the path defined in the nginx config as an internal
+=======
+#   This should be set to the path classd in the nginx config as an internal
+>>>>>>> urgi-dev
 #   redirect with access to Galaxy's data files
 #
 # [*x_archive_files*]
@@ -139,7 +143,10 @@
 #   set to true, it will only happen once per iteration of the handler queue.
 #   although better for performance due to reduced queries, the tradeoff is a
 #   greater possibility that jobs will be dispatched past the configured limits
+<<<<<<< HEAD
 #
+=======
+>>>>>>> urgi-dev
 #
 # [*use_amqp_server*]
 #   Galaxy uses AMQ protocol to receive messages from external sources like bar
@@ -150,6 +157,7 @@
 #   running.
 #
 # [*amqp_host*]
+<<<<<<< HEAD
 #
 #
 # [*amqp_port*]
@@ -175,6 +183,24 @@
 #
 # [*amqp_ctl_path*]
 #
+=======
+#
+# [*amqp_port*]
+#
+# [*amqp_userid*]
+#
+# [*amqp_password*]
+#
+# [*amqp_virtual_host*]
+#
+# [*amqp_queue*]
+#
+# [*amqp_exchange*]
+#
+# [*amqp_routing_key*]
+#
+# [*amqp_ctl_path*]
+>>>>>>> urgi-dev
 #
 #
 # [*admin_email*]
@@ -436,6 +462,7 @@ class galaxy::universe(
   # Worker Configuration
   $wk_config = false,
 
+<<<<<<< HEAD
   $uwsgi_socket = "127.0.0.1:4001",
   $uwsgi_stats_enable = true,
   $uwsgi_stats_socket = "127.0.0.9191",
@@ -443,10 +470,16 @@ class galaxy::universe(
   $uwsgi_threads = 4,
   $uwsgi_log = "uwsgi.log",
 
+=======
+>>>>>>> urgi-dev
   $number_of_web_workers = 4,
   $webworker_starting_port_number = 8000,
   $webworker_host_to_listen_on = "0.0.0.0",
   $webworker_threadpool_workers = 5,
+<<<<<<< HEAD
+=======
+
+>>>>>>> urgi-dev
   $number_of_background_workers = 4,
   $handler_host_to_listen_on = "0.0.0.0",
   $handler_threadpool_workers = 5,
@@ -461,11 +494,21 @@ class galaxy::universe(
   ],
 
   # Paths
+<<<<<<< HEAD
   $tmp_file_dir = 'database/tmp',
   $file_path = 'database/files',
   $tool_dependency_dir = hiera("galaxy::universe::tool_dependency_dir"),
   $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file = 'job_conf.xml',
+=======
+  $tmp_file_dir        = "$galaxy::params::app_directory/database/tmp",
+  $file_path           = "$galaxy::params::app_directory/database/files",
+  $tool_dependency_dir = "$galaxy::params::app_directory/tool_dependencies",
+  $cluster_files_dir   = "$galaxy::params::app_directory/database/pbs",
+  $job_working_dir     = "$galaxy::params::app_directory/database/job_working_directory",
+  $tool_config_files   = ['tool_conf.xml','shed_tool_conf.xml'],
+  $job_config_file     = 'job_conf.xml',
+>>>>>>> urgi-dev
 
 
   ## Backend Configuration ##
@@ -532,7 +575,7 @@ class galaxy::universe(
   ## Access and Data ##
   # FTP
   $enable_ftp_upload = true,
-  $ftp_upload_dir = 'database/ftp/',
+  $ftp_upload_dir = "$galaxy::params::app_directory/database/ftp/",
   $ftp_upload_site = $fqdn,
 
   # Quotas
@@ -556,16 +599,20 @@ class galaxy::universe(
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = 'database/whoosh_indexes',
+  $whoosh_index_dir = "$galaxy::params::app_directory/database/whoosh_indexes",
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
   $lucene_fulltext_noindex_filetypes = ['bam','sam','wig','bigwig','fasta','fastq','fastqsolexa','fastqillumina','fastqsanger'],
   $lucene_fulltext_url = 'https://localhost/lucene/',
 
+<<<<<<< HEAD
 
   ## OTHER ##
 
+=======
+  ## OTHER ##
+>>>>>>> urgi-dev
   # MISC
   $retry_metadata_internally = true,
 
@@ -597,7 +644,11 @@ class galaxy::universe(
   $directory                          = hiera("galaxy::universe::app_directory")
   $handler_starting_port_number       = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
+<<<<<<< HEAD
   $number_of_web_workers_array = range("0", -1+$number_of_web_workers)
+=======
+  $number_of_web_workers_array        = range("0", -1+$number_of_web_workers)
+>>>>>>> urgi-dev
 
   if($id_secret == 'my-secret-random-id'){
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
