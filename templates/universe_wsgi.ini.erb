@@ -196,7 +196,7 @@ tool_config_file = <%= Array(@tool_config_files).join(",") %>
 tool_dependency_dir = <%= @tool_dependency_dir %>
 
 # Enable automatic polling of relative tool sheds to see if any updates
-# are available for installed repositories.  Ideally only one Galaxy 
+# are available for installed repositories.  Ideally only one Galaxy
 # server process should be able to check for repository updates.  The
 # setting for hours_between_check should be an integer between 1 and 24.
 #enable_tool_shed_check = False
@@ -232,13 +232,13 @@ visualizations_config_directory = config/visualizations
 # Each job is given a unique empty directory as its current working directory.
 # This option defines in what parent directory those directories will be
 # created.
-#job_working_directory = database/job_working_directory
+job_working_directory = <%= @job_working_dir %>
 
 # If using a cluster, Galaxy will write job scripts and stdout/stderr to this
 # directory.
-#cluster_files_directory = database/pbs
+cluster_files_directory = <%= @cluster_files_dir %>
 
-# External service types config file, defines what types of external_services configurations 
+# External service types config file, defines what types of external_services configurations
 # are available in Galaxy.
 #external_service_type_config_file = external_service_types_conf.xml
 
@@ -350,13 +350,157 @@ wiki_url = <%= @ui_extra_wiki_url %>
 support_url = <%= @ui_extra_support_url %>
 <% end %>
 <% if @ui_extra_citation_url %>
-citation_url = <%= @ui_extra_citation_url %> 
+citation_url = <%= @ui_extra_citation_url %>
 <% end %>
 <% if @ui_extra_terms_url %>
 terms_url = <%= @ui_extra_terms_url %>
 <% end %>
 
 # Serve static content, which must be enabled if you're not serving it via a
+#nginx_upload_store = True
+  <% end %>
+  <% if @nginx_upload_path %>
+#nginx_upload_path = True
+  <% end %>
+<% end %>
+<% end %>
+
+<% if @upstream_gzip %>
+upstream_gzip = true
+<% end %>
+
+
+# -- Logging and Debugging
+
+log_level = <%= @log_level %>
+<% if @database_engine_option_echo %>
+database_engine_option_echo = True
+<% end %>
+<% if @database_engine_option_echo_pool %>
+database_engine_option_echo_pool = True
+<% end %>
+<% if @log_events  %>
+log_events = True
+<% end %>
+<% if @log_actions %>
+log_actions = True
+<% end %>
+<% if @sanitize_all_html %>
+sanitize_all_html = True
+<% end %>
+<% if @debug_enable %>
+debug = True
+<% end %>
+<% if  @debug_wsgi_lint %>
+use_lint = True
+<% end %>
+<% if @debug_use_profile  %>
+use_profile = True
+<% end %>
+<% if  @debug_use_printdebug %>
+use_printdebug = True
+<% end %>
+<% if @debug_use_interactive  %>
+use_interactive = True
+<% end %>
+<% if @debug_use_heartbeat %>
+use_heartbeat = True
+<% end %>
+<% if @debug_use_memdump %>
+use_memdump = True
+<% end %>
+<%#
+# -- Data Libraries
+
+# These library upload options are described in much more detail in the wiki:
+# http://wiki.g2.bx.psu.edu/Admin/Data%20Libraries/Uploading%20Library%20Files
+%>
+<% if !@library_import_dir.eql?"None" %>
+library_import_dir = <% @library_import_dir %>
+<% end %>
+<% if !@user_library_import_dir.eql?"None" %>
+user_library_import_dir = <% @user_library_import_dir %>
+<% end %>
+<% if @allow_library_path_paste %>
+allow_library_path_paste = True
+<% end %>
+
+<% if @disable_library_comptypes.size > 0 %>
+disable_library_comptypes = <%= Array(@disable_library_comptypes).join(",") %>
+<% end %>
+
+<% if @use_transfer_manager %>
+transfer_manager_port = <% @transfer_manager_port %>
+<% end %>
+<% if @data_search_with_whoosh %>
+enable_whoosh_library_search = True
+whoosh_index_dir = <%= @whoosh_index_dir %>
+<% end %>
+<% if @data_search_with_lucene %>
+enable_lucene_library_search = True
+fulltext_max_size = <%= @lucene_fulltext_max_size %>
+fulltext_noindex_filetypes=<%= Array(@lucene_fulltext_noindex_filetypes).join(",") %>
+fulltext_url = <%= @lucene_fulltext_url %>
+<% end %>
+# -- Users and Security
+
+id_secret = <%= @id_secret %>
+
+<% if @use_remote_user %>
+use_remote_user = True
+remote_user_maildomain = <%= @remote_user_maildomain %>
+remote_user_logout_href = <%= @remote_user_logout_href %>
+<% end %>
+
+<% if @admin_users.size > 0 %>
+admin_users = <%= Array(@admin_users).join(",") %>
+<% end %>
+<% if @require_login %>
+require_login = True
+<% end %>
+<% if @allow_user_creation %>
+allow_user_creation = True
+<% end %>
+<% if @allow_user_deletion %>
+allow_user_deletion = True
+<% end %>
+<% if @allow_user_impersonation %>
+allow_user_impersonation = True
+<% end %>
+<% if @allow_user_dataset_purge %>
+allow_user_dataset_purge = True
+<% end %>
+<% if @new_user_dataset_access_role_default_private %>
+new_user_dataset_access_role_default_private = True
+<% end %>
+
+# -- beta features
+
+# object store mode (valid options are: disk, s3, swift, distributed, hierarchical)
+#object_store = disk
+#os_access_key = <your cloud object store access key>
+#os_secret_key = <your cloud object store secret key>
+#os_bucket_name = <name of an existing object store bucket or container>
+# if using 'swift' object store, you must specify the following connection properties
+#os_host = swift.rc.nectar.org.au
+#os_port = 8888
+#os_is_secure = false
+#os_conn_path = /
+# reduced redundancy can be used only with the 's3' object store
+#os_use_reduced_redundancy = false
+# size (in gb) that the cache used by object store should be limited to.
+# if the value is not specified, the cache size will be limited only by the
+# file system size. the file system location of the cache is considered the
+# configuration of the ``file_path`` directive defined above.
+#object_store_cache_size = 100
+
+# configuration file for the distributed object store, if object_store =
+# distributed.  see the sample at distributed_object_store_conf.xml.sample
+#distributed_object_store_config_file = none
+
+# enable galaxy to communicate directly with a sequencer
+#enable_sequencer_communication = false
+
 # proxy server.  These options should be self explanatory and so are not
 # documented individually.  You can use these paths (or ones in the proxy
 # server) to point to your own styles.
