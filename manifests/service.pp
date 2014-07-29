@@ -18,10 +18,9 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-class galaxy::service (
+class galaxy::service {
   $directory = $galaxy::params::app_directory,
   $wk_config = $galaxy::universe::wk_config,
-
   include supervisord
   supervisord::program { 'galaxy_uwsgi':
     command     => 'uwsgi --plugin python --ini-paste $directory/universe_wsgi.ini',
