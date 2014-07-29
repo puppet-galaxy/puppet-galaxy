@@ -464,11 +464,11 @@ class galaxy::universe(
   ],
 
   # Paths
-  $tmp_file_dir = 'database/tmp',
-  $file_path = 'database/files',
-  $tool_dependency_dir = "$galaxy::params::directory/tool_dependencies",
-  $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
-  $job_config_file = 'job_conf.xml',
+  $tmp_file_dir        = "$galaxy::params::app_directory/database/tmp",
+  $file_path           = "$galaxy::params::app_directory/database/files",
+  $tool_dependency_dir = "$galaxy::params::app_directory/tool_dependencies",
+  $tool_config_files   = ['tool_conf.xml','shed_tool_conf.xml'],
+  $job_config_file     = 'job_conf.xml',
 
 
   ## Backend Configuration ##
@@ -535,7 +535,7 @@ class galaxy::universe(
   ## Access and Data ##
   # FTP
   $enable_ftp_upload = true,
-  $ftp_upload_dir = 'database/ftp/',
+  $ftp_upload_dir = "$galaxy::params::app_directory/database/ftp/",
   $ftp_upload_site = $fqdn,
   
   # Quotas
@@ -559,7 +559,7 @@ class galaxy::universe(
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = 'database/whoosh_indexes',
+  $whoosh_index_dir = "$galaxy::params::app_directory/database/whoosh_indexes",
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
