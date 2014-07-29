@@ -60,11 +60,7 @@
 #
 # [*x_accel_redirect*]
 #   The same download handling can be done by nginx using X-Accel-Redirect.
-<<<<<<< HEAD
 #   This should be set to the path defined in the nginx config as an internal
-=======
-#   This should be set to the path classd in the nginx config as an internal
->>>>>>> urgi-dev
 #   redirect with access to Galaxy's data files
 #
 # [*x_archive_files*]
@@ -143,10 +139,6 @@
 #   set to true, it will only happen once per iteration of the handler queue.
 #   although better for performance due to reduced queries, the tradeoff is a
 #   greater possibility that jobs will be dispatched past the configured limits
-<<<<<<< HEAD
-#
-=======
->>>>>>> urgi-dev
 #
 # [*use_amqp_server*]
 #   Galaxy uses AMQ protocol to receive messages from external sources like bar
@@ -157,8 +149,6 @@
 #   running.
 #
 # [*amqp_host*]
-<<<<<<< HEAD
-#
 #
 # [*amqp_port*]
 #
@@ -183,7 +173,6 @@
 #
 # [*amqp_ctl_path*]
 #
-=======
 #
 # [*amqp_port*]
 #
@@ -200,8 +189,6 @@
 # [*amqp_routing_key*]
 #
 # [*amqp_ctl_path*]
->>>>>>> urgi-dev
-#
 #
 # [*admin_email*]
 #   Datasets in an error state include a link to report the error. Those
