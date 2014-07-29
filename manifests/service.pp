@@ -28,7 +28,7 @@ class galaxy::service (
     directory   => $directory,
     umask       => '022',
     autostart   => true,
-    autorestart => true,
+    autorestart => "true",
     startsecs   => 10,
     user        => galaxy,
     numprocs    => 1,
@@ -43,7 +43,7 @@ class galaxy::service (
     numprocs     => 4,
     umask        => '022',
     autostart    => true,
-    autorestart  => true,
+    autorestart  => "true",
     startsecs    => 15,
     user         => galaxy,
     environment  => {
