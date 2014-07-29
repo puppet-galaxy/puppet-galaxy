@@ -18,7 +18,7 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::first_run(
-  $directory = hiera("galaxy::universe::app_directory")
+  $directory = $galaxy::universe::app_directory
 ){
   exec { "galaxy-${name}-eggs-and-universeconf":
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',

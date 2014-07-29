@@ -494,13 +494,6 @@ class galaxy::universe(
   ],
 
   # Paths
-<<<<<<< HEAD
-  $tmp_file_dir = 'database/tmp',
-  $file_path = 'database/files',
-  $tool_dependency_dir = hiera("galaxy::universe::tool_dependency_dir"),
-  $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
-  $job_config_file = 'job_conf.xml',
-=======
   $tmp_file_dir        = "$galaxy::params::app_directory/database/tmp",
   $file_path           = "$galaxy::params::app_directory/database/files",
   $tool_dependency_dir = "$galaxy::params::app_directory/tool_dependencies",
@@ -508,7 +501,6 @@ class galaxy::universe(
   $job_working_dir     = "$galaxy::params::app_directory/database/job_working_directory",
   $tool_config_files   = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file     = 'job_conf.xml',
->>>>>>> urgi-dev
 
 
   ## Backend Configuration ##
@@ -641,15 +633,10 @@ class galaxy::universe(
   $use_transfer_manager = false,
   $transfer_manager_port = 10000,
 ){
-  $directory                          = hiera("galaxy::universe::app_directory")
+  $directory                          = $galaxy::universe::app_directory
   $handler_starting_port_number       = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
-<<<<<<< HEAD
-  $number_of_web_workers_array = range("0", -1+$number_of_web_workers)
-=======
   $number_of_web_workers_array        = range("0", -1+$number_of_web_workers)
->>>>>>> urgi-dev
-
   if($id_secret == 'my-secret-random-id'){
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
   }

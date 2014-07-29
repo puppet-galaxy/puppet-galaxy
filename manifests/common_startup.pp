@@ -4,7 +4,7 @@
 #
 #
 class galaxy::common_startup{
-  $directory = hiera("galaxy::universe::app_directory")
+  $directory = $galaxy::universe::app_directory
   file { "$directory/common_startup.sh":
     require => Class['galaxy::universe'],
     source  => '/etc/puppet/modules/galaxy/files/common_startup.sh',

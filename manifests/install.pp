@@ -28,9 +28,9 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::install(
-  $install_directory = hiera("galaxy::universe::app_directory"),
-  $galaxy_branch     = hiera("galaxy::universe::galaxy_branch"),
-  $galaxy_repository = hiera("galaxy::universe::repository"),
+  $install_directory = $galaxy::universe::app_directory,
+  $galaxy_branch     = $galaxy::universe::galaxy_branch,
+  $galaxy_repository = $galaxy::universe::repository,
 ){
 
   # There is a "bug" here in that every puppet run we'll get notifications of switching branches, even though we're not actually making changes. E.g.,

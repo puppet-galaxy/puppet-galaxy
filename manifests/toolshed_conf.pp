@@ -26,13 +26,13 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::toolshed_conf (
-  $app_directory = hiera("galaxy::universe::app_directory"),
   $default_toolsheds = [
     { name => 'Galaxy main tool shed', url => 'http://toolshed.g2.bx.psu.edu/' },
     { name => 'Galaxy test tool shed', url => 'http://testtoolshed.g2.bx.psu.edu/' }
   ],
   $custom_toolsheds = [],
 ){
+  $app_directory = $galaxy::universe::app_directory
   file { "$app_directory/tool_sheds_conf.xml":
     require => Class['galaxy::universe'],
     content => template("galaxy/tool_sheds_conf.xml.erb"),

@@ -35,9 +35,9 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy (
-  $galaxy_branch = hiera("galaxy::universe::galaxy_branch", "stable"),
-  $create_user   = hiera("galaxy::universe::create_user", true),
-  $directory     = hiera("galaxy::universe::app_directory"),
+  $galaxy_branch = $galaxy::universe::galaxy_branch,
+  $create_user   = $galaxy::universe::create_user,
+  $directory     = $galaxy::universe::app_directory,
 ) {
   include galaxy::dependencies
   if($create_user){
