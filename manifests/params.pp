@@ -28,6 +28,8 @@
 #
 class galaxy::params {
   $galaxy_branch = 'stable'
-  $create_user = true
-  $directory = '/home/galaxy/galaxy-dist/'
+  $galaxy_repository = 'https://bitbucket.org/galaxy/galaxy-dist/'
+  $create_user   = true
+  $app_directory = '/home/galaxy/galaxy-dist'
+  $home_direcory = '/home/galaxy'
 }

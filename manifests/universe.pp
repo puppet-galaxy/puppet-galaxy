@@ -96,22 +96,7 @@
 #
 # [*db_driver*]
 #   Database driver to use. Use one of 'postgresql' or 'mysql'. Others have not been tested with this puppet module
-#
-# [*db_username*]
-#   Username to connect to database with. It is recommend you create a separate user for galaxy. We recommend use of the puppetlabs database modules to manage database users
-#
-# [*db_password*]
-#   Password to connect to database with. 
-#
-# [*db_host*]
-#   Host for the database
-#
-# [*db_port*]
-#   Port for the database
-#
-# [*db_database*]
-#   Name of the database (schema in postgres, database name in mysql)
-#
+
 # [*db_opts_pool_size*]
 #   ???
 #
@@ -122,7 +107,7 @@
 #   enable job recovery (if galaxy is restarted while cluster jobs are running,
 #   it can "recover" them when it starts). this is not safe to use if you are
 #   running more than one galaxy server using the same database.
-#   
+#
 # [*outputs_to_working_directory*]
 #   if (for example) you run on a cluster and your datasets (by default,
 #   database/files/) are mounted read-only, this option will override tool
@@ -137,7 +122,7 @@
 #   will retry the number of times specified below, waiting 1 second between
 #   tries. for nfs, you may want to try the -noac mount option (linux) or
 #   -actimeo=0 (solaris).
-#   
+#
 # [*cleanup_job*]
 #   clean up various bits of jobs left on the filesystem after completion.
 #   these bits include the job working directory, external metadata temporary
@@ -175,32 +160,23 @@
 #
 # [*amqp_host*]
 #   
-#
 # [*amqp_port*]
-#   
 #
 # [*amqp_userid*]
-#   
 #
 # [*amqp_password*]
 #   
 #
 # [*amqp_virtual_host*]
 #   
-#
 # [*amqp_queue*]
 #   
-#
 # [*amqp_exchange*]
-#   
 #
-# [*amqp_routing_key*]
-#   
+# [*amqp_routing_key*] 
 #
 # [*amqp_ctl_path*]
 #   
-#
-#
 # [*admin_email*]
 #   Datasets in an error state include a link to report the error. Those
 #   reports will be sent to this address. Error reports are disabled if no
@@ -278,10 +254,10 @@
 # [*enable_ftp_upload*]
 #   enable galaxy's "upload via ftp" interface.  you'll need to install and
 #   configure an ftp server (we've used proftpd since it can use galaxy's
-#   database for authentication).  
+#   database for authentication).
 #
 #   See the following:
-#   https://wiki.galaxyproject.org/Admin/Config/Upload%20via%20FTP 
+#   https://wiki.galaxyproject.org/Admin/Config/Upload%20via%20FTP
 #   https://wiki.galaxyproject.org/Admin/Config/ProFTPd_with_AD
 #
 # [*ftp_upload_dir*]
@@ -434,7 +410,7 @@
 #
 # === Examples
 #
-#  galaxy::universe { 'production': 
+#  galaxy::universe { 'production':
 #     ui_branding => "ACME",
 #     remote_user => true,
 #     remote_user_maildomain => "EXAMPLE.COM",
@@ -454,11 +430,9 @@
 #
 # === Copyright
 #
-# Copyright 2014, for the puppet code representing a universe_wsgi.ini resource. 
+# Copyright 2014, for the puppet code representing a universe_wsgi.ini resource.
 #
-define galaxy::universe(
-  $directory = $galaxy::params::directory,
-
+class galaxy::universe(
   # Worker Configuration
   $wk_config = false,
 
@@ -467,7 +441,7 @@ define galaxy::universe(
   $webworker_host_to_listen_on = "0.0.0.0",
   $webworker_threadpool_workers = 5,
 
-  $number_of_background_workers = 4, 
+  $number_of_background_workers = 4,
   $handler_host_to_listen_on = "0.0.0.0",
   $handler_threadpool_workers = 5,
 
@@ -481,11 +455,13 @@ define galaxy::universe(
   ],
 
   # Paths
-  $tmp_file_dir = 'database/tmp',
-  $file_path = 'database/files',
-  $tool_dependency_dir = "$directory/tool_dependencies",
-  $tool_config_files = ['tool_conf.xml','shed_tool_conf.xml'],
-  $job_config_file = 'job_conf.xml',
+  $tmp_file_dir        = "$galaxy::params::app_directory/database/tmp",
+  $file_path           = "$galaxy::params::app_directory/database/files",
+  $tool_dependency_dir = "$galaxy::params::app_directory/tool_dependencies",
+  $cluster_files_dir   = "$galaxy::params::app_directory/database/pbs",
+  $job_working_dir     = "$galaxy::params::app_directory/database/job_working_directory",
+  $tool_config_files   = ['tool_conf.xml','shed_tool_conf.xml'],
+  $job_config_file     = 'job_conf.xml',
 
 
   ## Backend Configuration ##
@@ -498,18 +474,11 @@ define galaxy::universe(
   #$nginx_upload_path = '',
   $upstream_gzip = true,
 
-  # Database 
-  $db_config = false,
-  $db_driver = 'postgresql',
-  $db_username = 'galaxy',
-  $db_password = 'my-secure-password',
-  $db_host = 'localhost',
-  $db_port = 5432,
-  $db_database = 'galaxydb',
-
-  $db_opts_pool_size = '500',
+  # Database
+  $db_connection = 'sqlite:///./database/local.sqlite?isolation_level=IMMEDIATE',
+  $db_driver = 'sqlite',
+  $db_opts_pool_size = 500,
   $db_opts_max_overflow = 1000,
-
 
   ## Cluster Options ##
   $enable_job_recovery = true,
@@ -532,11 +501,10 @@ define galaxy::universe(
   $amqp_ctl_path = '/path/to/rabbitmqctl',
 
   ## Administration  and Security##
-
   # Admin Users
   $admin_email = "root@localhost",
   $admin_users = [],
-  $require_login = true,
+  $require_login = false,
   $allow_user_creation = true,
   $allow_user_deletion = true,
   $allow_user_impersonation = true,
@@ -546,7 +514,6 @@ define galaxy::universe(
   # Security
   $sanitize_all_html = true,
   $id_secret = 'my-secret-random-id',
-
 
   ## Authentication ##
   # Remote User Config
@@ -558,17 +525,14 @@ define galaxy::universe(
   $enable_openid = false,
   $openid_config_file = 'openid_conf.xml',
 
-
   ## Access and Data ##
-
   # FTP
   $enable_ftp_upload = true,
-  $ftp_upload_dir = "$directory/database/ftp/",
+  $ftp_upload_dir = "$galaxy::params::app_directory/database/ftp/",
   $ftp_upload_site = $fqdn,
-  
+
   # Quotas
   $enable_quotas = true,
-
 
   ## Debug ##
   $log_level = 'INFO',
@@ -585,20 +549,17 @@ define galaxy::universe(
   $debug_use_heartbeat = false,
   $debug_use_memdump = false,
 
-
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = 'database/whoosh_indexes',
+  $whoosh_index_dir = "$galaxy::params::app_directory/database/whoosh_indexes",
   # Lucene
   $data_search_with_lucene = false,
   $lucene_fulltext_max_size = 500,
   $lucene_fulltext_noindex_filetypes = ['bam','sam','wig','bigwig','fasta','fastq','fastqsolexa','fastqillumina','fastqsanger'],
   $lucene_fulltext_url = 'https://localhost/lucene/',
   
-  
   ## OTHER ## 
-
   # MISC
   $retry_metadata_internally = true,
 
@@ -626,21 +587,20 @@ define galaxy::universe(
   # Transfer Manager
   $use_transfer_manager = false,
   $transfer_manager_port = 10000,
-
-
 ){
-
-  $handler_starting_port_number = $webworker_starting_port_number+$number_of_background_workers
+  $directory                          = $galaxy::params::app_directory
+  $handler_starting_port_number       = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
-  $number_of_web_workers_array = range("0", -1+$number_of_web_workers)
-  
+  $number_of_web_workers_array        = range("0", -1+$number_of_web_workers)
+
   if($id_secret == 'my-secret-random-id'){
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
   }
 
   file { "$directory/universe_wsgi.ini":
+    require => Class['galaxy::install'],
     content => template("galaxy/universe_wsgi.ini.erb"),
+    owner   => 'galaxy',
+    group   => 'galaxy',
   }
-
-
 }

@@ -10,7 +10,6 @@
     * [Defined Types](#defined-types)
         * [Type: galaxy::first_run](#type-galaxyfirst_run)
         * [Type: galaxy::install](#type-galaxyinstall)
-        * [Type: galaxy::instance](#type-galaxyinstance)
         * [Type: galaxy::job_conf](#type-galaxyjob_conf)
         * [Type: galaxy::service](#type-galaxyservice)
         * [Type: galaxy::toolshed_conf](#type-galaxytoolshed_conf)
