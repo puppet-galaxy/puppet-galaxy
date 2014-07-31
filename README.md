@@ -7,14 +7,14 @@
         * [Class: galaxy](#class-galaxy)
         * [Class: galaxy::dependencies](#class-galaxydependencies)
         * [Class: galaxy::params](#class-galaxyparams)
-        * [Class: galaxy::common_startup](#type-galaxycommon_startup)
-        * [Class: galaxy::create_db]
-        * [Class: galaxy::manage_tools]
-        * [Class: galaxy::install](#type-galaxyinstall)
-        * [Class: galaxy::job_conf](#type-galaxyjob_conf)
-        * [Class: galaxy::service](#type-galaxyservice)
-        * [Class: galaxy::toolshed_conf](#type-galaxytoolshed_conf)
-        * [Class: galaxy::universe](#type-galaxyuniverse)
+        * [Class: galaxy::common_startup](#class-galaxycommon_startup)
+        * [Class: galaxy::create_db](#class-galaxycreate_db)
+        * [Class: galaxy::manage_tools](#class-galaxymanage_tools)
+        * [Class: galaxy::install](#class-galaxyinstall)
+        * [Class: galaxy::job_conf](#class-galaxyjob_conf)
+        * [Class: galaxy::service](#class-galaxyservice)
+        * [Class: galaxy::toolshed_conf](#class-galaxytoolshed_conf)
+        * [Class: galaxy::universe](#class-galaxyuniverse)
 5. [Parameters](#parameters)
 7. [Contact](#contact)
 8. [Galaxy Project](#galaxy-project)
@@ -36,33 +36,31 @@ This class installs all the packages required to build one new Galaxy's instance
 ####Class: `galaxy::params`
 This class sets the default parameters for the galaxy puppet module ( create user, directory and galaxy branch)
 
-####Class: `galaxy::first_run`
-This type manages the first run of Galaxy. It means that Galaxy is started by run.sh --daemon and stopped by run.sh --stop-daemon once
+####Class: `galaxy::common_startup`
+This class writes common_startup.sh from galaxy-central and execute it.
+This convert .samples files in .ini files and fetch the eggs.
 
-it has serving one time.
+####Class: `galaxy::create_db`
+This class executes create_db.sh to create a database and update it at the last version.
+
+####Class: `galaxy::manage_tools`
+This class executes  manage_tools.py wich updates the tools.
 
 ####Class: `galaxy::install`
-This type download the remote repository from bickbuckets.org/galaxy/galaxy-dist with mercurial.
-
-####Class: `galaxy::instance`
-This type which represents a single instance of a galaxy server. This was done
-
-this way in the event that you have more than one galaxy server running on a
-
-single host (e.g., development and production)
+This class download the remote repository from bickbuckets.org/galaxy/galaxy-dist with mercurial.
 
 ####Class: `galaxy::job_conf`
-This type writes the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp
+This class writes the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp
 
 ####Class: `galaxy::service`
-This type configures galaxy service. Currently debain/redhat are the only two supported.
+This class configures galaxy service. Currently debain/redhat are the only two supported.
 
 ####Class: `galaxy::toolshed_conf`
-This type writes Galaxy toolshed configuration. Specifies which toolsheds are available to use in the web interface.
+This class writes Galaxy toolshed configuration. Specifies which toolsheds are available to use in the web interface.
 
 ####Class: `galaxy::universe`
 
-This type writes the universe_wsgi.ini , the main configuration file of Galaxy.
+This class writes the universe_wsgi.ini , the main configuration file of Galaxy.
 
 ##Parameters
 

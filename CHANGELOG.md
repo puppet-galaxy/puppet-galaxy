@@ -1,4 +1,4 @@
-#2014.30.08 Release 0.0.7
+#2014.30.07 Release 0.0.7
 
 => Removed first_run.pp.
 
