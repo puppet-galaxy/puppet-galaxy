@@ -13,6 +13,7 @@ class galaxy::directories(
   $ftp                 = '/home/galaxy/galaxy-dist/database/ftp/',
   $compiled_templates  = '/home/galaxy/galaxy-dist/database/compiled_templates',
   $object_store_object = '/home/galaxy/galaxy-dist/database/object_store_object',
+  $object_store_cache  = '/home/galaxy/galaxy-dist/database/object_store_cache',
   $tool_dependency     = '/home/galaxy/galaxy-dist/tool_dependencies',
   $tool_data_jars      = '/home/galaxy/galaxy-dist/tool-data/shared/jars',
 ){
@@ -25,6 +26,7 @@ class galaxy::directories(
     "$ftp",
     "$compiled_templates",
     "$object_store_object",
+    "$object_store_cache",
     "$tool_dependency",
     "$tool_data_jars",
     '/home/galaxy/galaxy-dist/static/genetrack/plots',
@@ -34,6 +36,6 @@ class galaxy::directories(
     ensure => directory,
     owner  => 'galaxy',
     group  => 'galaxy',
-    mode   => 'a=r+w+x',
+    mode   => '0755',
   }
 }
