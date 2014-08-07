@@ -1,3 +1,8 @@
+#2014.07.08 Release 0.0.8
+
+=> Added class galaxy::directories , which creates some directories to fix some bug at the initial start of Galaxy.
+
+
 #2014.30.07 Release 0.0.7
 
 => Removed first_run.pp.
