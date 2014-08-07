@@ -70,7 +70,7 @@
 # [*x_accel_redirect*]
 #   The same download handling can be done by nginx using X-Accel-Redirect.
 #   This should be set to the path defined in the nginx config as an internal
-#   redirect with access to Galaxy's data files 
+#   redirect with access to Galaxy's data files
 #
 # [*x_archive_files*]
 #   nginx can make use of mod_zip to create zip files containing multiple
@@ -88,7 +88,7 @@
 #   (Currently not enabled!) This value overrides the action set on the file
 #   upload form, e.g. the web path where the nginx_upload_module has been
 #   configured to intercept upload requests.
-#   
+#
 # [*upstream_gzip*]
 #   If using compression in the upstream proxy server, use this option to
 #   disable gzipping of library .tar.gz and .zip archives, since the proxy
@@ -148,7 +148,6 @@
 #   set to true, it will only happen once per iteration of the handler queue.
 #   although better for performance due to reduced queries, the tradeoff is a
 #   greater possibility that jobs will be dispatched past the configured limits
-#   
 #
 # [*use_amqp_server*]
 #   Galaxy uses AMQ protocol to receive messages from external sources like bar
@@ -156,27 +155,26 @@
 #   For Galaxy to receive messages from a message queue the RabbitMQ server has
 #   to be set up with a user account and other parameters listed below. The
 #   'host' and 'port' fields should point to where the RabbitMQ server is
-#   running. 
+#   running.
 #
 # [*amqp_host*]
-#   
+#
 # [*amqp_port*]
 #
 # [*amqp_userid*]
 #
 # [*amqp_password*]
-#   
 #
 # [*amqp_virtual_host*]
-#   
+#
 # [*amqp_queue*]
-#   
+#
 # [*amqp_exchange*]
 #
-# [*amqp_routing_key*] 
+# [*amqp_routing_key*]
 #
 # [*amqp_ctl_path*]
-#   
+#
 # [*admin_email*]
 #   Datasets in an error state include a link to report the error. Those
 #   reports will be sent to this address. Error reports are disabled if no
@@ -194,7 +192,7 @@
 # [*allow_user_creation*]
 #   allow unregistered users to create new accounts (otherwise, they will have
 #   to be created by an admin).
-#   
+#
 # [*allow_user_deletion*]
 #   allow administrators to delete accounts.
 #
@@ -211,29 +209,25 @@
 #   it to be private. does not affect existing users and data, only ones
 #   created after this option is set. users may still change their default
 #   back to public.
-#   
 #
 # [*sanitize_all_html*]
 #   By default, all tool output served as 'text/html' will be sanitized
 #   thoroughly. This can be disabled if you have special tools that require
 #   unaltered output.
-#   
 #
 # [*id_secret*]
 #   Galaxy encodes various internal values when these values will be output in
 #   some format (for example, in a URL or cookie). You should set a key to be
 #   used by the algorithm that encodes and decodes these values. It can be any
 #   string. If left unchanged, anyone could construct a cookie that would
-#   grant them access to others' sessions. 
+#   grant them access to others' sessions.
 #   (Tip: use `openssl rand -hex 32` to generate one)
-#   
 #
 # [*remote_user*]
 #   User authentication can be delegated to an upstream proxy server (usually
 #   Apache). The upstream proxy should set a REMOTE_USER header in the request.
 #   Enabling remote user disables regular logins. For more information, see:
 #   http://wiki.g2.bx.psu.edu/Admin/Config/Apache%20Proxy
-#   
 #
 # [*remote_user_maildomain*]
 #   If use_remote_user is enabled and your external authentication method just
@@ -436,17 +430,17 @@ class galaxy::universe(
   # Worker Configuration
   $wk_config = false,
 
-  $number_of_web_workers = 4,
+  $number_of_web_workers          = 4,
   $webworker_starting_port_number = 8000,
-  $webworker_host_to_listen_on = "0.0.0.0",
-  $webworker_threadpool_workers = 5,
+  $webworker_host_to_listen_on    = "0.0.0.0",
+  $webworker_threadpool_workers   = 5,
 
   $number_of_background_workers = 4,
-  $handler_host_to_listen_on = "0.0.0.0",
-  $handler_threadpool_workers = 5,
+  $handler_host_to_listen_on    = "0.0.0.0",
+  $handler_threadpool_workers   = 5,
 
   # Proxying
-  $use_prefix = true,
+  $use_prefix   = true,
   $proxy_prefix = "/galaxy",
 
   # Filters
@@ -455,58 +449,53 @@ class galaxy::universe(
   ],
 
   # Paths
-  $tmp_file_dir        = "$galaxy::params::app_directory/database/tmp",
-  $file_path           = "$galaxy::params::app_directory/database/files",
-  $tool_dependency_dir = "$galaxy::params::app_directory/tool_dependencies",
-  $cluster_files_dir   = "$galaxy::params::app_directory/database/pbs",
-  $job_working_dir     = "$galaxy::params::app_directory/database/job_working_directory",
   $tool_config_files   = ['tool_conf.xml','shed_tool_conf.xml'],
   $job_config_file     = 'job_conf.xml',
 
 
   ## Backend Configuration ##
   # Web server
-  $webserver = 'apache',
-  $xsendfile = true,
-  $x_accel_redirect = true,
-  $x_archive_files = true,
+  $webserver           = 'apache',
+  $xsendfile           = true,
+  $x_accel_redirect    = true,
+  $x_archive_files     = true,
   #$nginx_upload_store = '',
-  #$nginx_upload_path = '',
-  $upstream_gzip = true,
+  #$nginx_upload_path  = '',
+  $upstream_gzip       = true,
 
   # Database
-  $db_connection = 'sqlite:///./database/local.sqlite?isolation_level=IMMEDIATE',
-  $db_driver = 'sqlite',
-  $db_opts_pool_size = 500,
+  $db_connection        = 'sqlite:///./database/local.sqlite?isolation_level=IMMEDIATE',
+  $db_driver            = 'sqlite',
+  $db_opts_pool_size    = 500,
   $db_opts_max_overflow = 1000,
 
   ## Cluster Options ##
-  $enable_job_recovery = true,
+  $enable_job_recovery          = true,
   $outputs_to_working_directory = false,
-  $retry_job_output_collection = 0,
-  $cleanup_job = onsuccess,
-  $environment_setup_file = 'None',
-  $cache_user_job_count = false,
+  $retry_job_output_collection  = 0,
+  $cleanup_job                  = onsuccess,
+  $environment_setup_file       = 'None',
+  $cache_user_job_count         = false,
 
   ## AMQP Server ##
-  $use_amqp_server = false,
-  $amqp_host = '127.0.0.1',
-  $amqp_port = 5672,
-  $amqp_userid = 'galaxy',
-  $amqp_password = 'galaxy',
+  $use_amqp_server   = false,
+  $amqp_host         = '127.0.0.1',
+  $amqp_port         = 5672,
+  $amqp_userid       = 'galaxy',
+  $amqp_password     = 'galaxy',
   $amqp_virtual_host = 'galaxy_messaging_engine',
-  $amqp_queue = 'galaxy_queue',
-  $amqp_exchange = 'galaxy_exchange',
-  $amqp_routing_key = 'bar_code_scanner',
-  $amqp_ctl_path = '/path/to/rabbitmqctl',
+  $amqp_queue        = 'galaxy_queue',
+  $amqp_exchange     = 'galaxy_exchange',
+  $amqp_routing_key  = 'bar_code_scanner',
+  $amqp_ctl_path     = '/path/to/rabbitmqctl',
 
   ## Administration  and Security##
   # Admin Users
-  $admin_email = "root@localhost",
-  $admin_users = [],
-  $require_login = false,
-  $allow_user_creation = true,
-  $allow_user_deletion = true,
+  $admin_email              = "root@localhost",
+  $admin_users              = [],
+  $require_login            = false,
+  $allow_user_creation      = true,
+  $allow_user_deletion      = true,
   $allow_user_impersonation = true,
   $allow_user_dataset_purge = true,
   $new_user_dataset_access_role_default_private = true,
@@ -517,75 +506,73 @@ class galaxy::universe(
 
   ## Authentication ##
   # Remote User Config
-  $remote_user = false,
-  $remote_user_maildomain = 'UNIVERSITY.EDU',
+  $remote_user             = false,
+  $remote_user_maildomain  = 'UNIVERSITY.EDU',
   $remote_user_logout_href = 'https://sso.university.edu/logout',
 
   # Open ID
-  $enable_openid = false,
+  $enable_openid      = false,
   $openid_config_file = 'openid_conf.xml',
 
   ## Access and Data ##
   # FTP
   $enable_ftp_upload = true,
-  $ftp_upload_dir = "$galaxy::params::app_directory/database/ftp/",
-  $ftp_upload_site = $fqdn,
+  $ftp_upload_site   = $fqdn,
 
   # Quotas
   $enable_quotas = true,
 
   ## Debug ##
   $log_level = 'INFO',
-  $database_engine_option_echo = false,
+  $database_engine_option_echo      = false,
   $database_engine_option_echo_pool = false,
-  $log_events = false,
-  $log_actions = false,
-
-  $debug_enable = false,
-  $debug_wsgi_lint = false,
-  $debug_use_profile = false,
-  $debug_use_printdebug = false,
+  $log_events            = false,
+  $log_actions           = false,
+  $debug_enable          = false,
+  $debug_wsgi_lint       = false,
+  $debug_use_profile     = false,
+  $debug_use_printdebug  = false,
   $debug_use_interactive = false,
-  $debug_use_heartbeat = false,
-  $debug_use_memdump = false,
+  $debug_use_heartbeat   = false,
+  $debug_use_memdump     = false,
 
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-  $whoosh_index_dir = "$galaxy::params::app_directory/database/whoosh_indexes",
+
   # Lucene
-  $data_search_with_lucene = false,
-  $lucene_fulltext_max_size = 500,
+  $data_search_with_lucene           = false,
+  $lucene_fulltext_max_size          = 500,
   $lucene_fulltext_noindex_filetypes = ['bam','sam','wig','bigwig','fasta','fastq','fastqsolexa','fastqillumina','fastqsanger'],
-  $lucene_fulltext_url = 'https://localhost/lucene/',
-  
-  ## OTHER ## 
+  $lucene_fulltext_url               = 'https://localhost/lucene/',
+
+  ## OTHER ##
   # MISC
   $retry_metadata_internally = true,
 
   # Cloud Settings
   $cloud_enable_launch = false,
-  $cloud_ami = 'ami-118bfc78',
+  $cloud_ami           = 'ami-118bfc78',
 
   # Branding
-  $ui_branding = $name,
+  $ui_branding    = $name,
   $ui_welcome_url = '/static/welcome.html',
-  $ui_logo_url = '/',
+  $ui_logo_url    = '/',
 
   # URLs
-  $ui_extra_wiki_url = 'http://wiki.g2.bx.psu.edu/',
-  $ui_extra_support_url = 'http://wiki.g2.bx.psu.edu/Support',
+  $ui_extra_wiki_url     = 'http://wiki.g2.bx.psu.edu/',
+  $ui_extra_support_url  = 'http://wiki.g2.bx.psu.edu/Support',
   $ui_extra_citation_url = 'http://wiki.g2.bx.psu.edu/Citing%20Galaxy',
-  $ui_extra_terms_url = 'None',
+  $ui_extra_terms_url    = 'None',
 
   # Libraries
-  $library_import_dir = 'None',
-  $user_library_import_dir = 'None',
-  $allow_library_path_paste = false,
+  $library_import_dir        = 'None',
+  $user_library_import_dir   = 'None',
+  $allow_library_path_paste  = false,
   $disable_library_comptypes = [],
 
   # Transfer Manager
-  $use_transfer_manager = false,
+  $use_transfer_manager  = false,
   $transfer_manager_port = 10000,
 ){
   $directory                          = $galaxy::params::app_directory
@@ -596,6 +583,15 @@ class galaxy::universe(
   if($id_secret == 'my-secret-random-id'){
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
   }
+
+  require galaxy::directories
+  $tmp_file_dir        = $galaxy::directories::tmp_file
+  $file_path           = $galaxy::directories::file_path
+  $tool_dependency_dir = $galaxy::directories::tool_dependency
+  $cluster_files_dir   = $galaxy::directories::cluster_files
+  $job_working_dir     = $galaxy::directories::job_working
+  $whoosh_index_dir    = $galaxy::directories::whoosh_index
+  $ftp_upload_dir      = $galaxy::directories::ftp
 
   file { "$directory/universe_wsgi.ini":
     require => Class['galaxy::install'],
