@@ -17,7 +17,7 @@ RUN_IN="<%= @directory %>"
 #--- main actions
 
 start() {
-	echo "Starting $SERVICE_NAME... "
+	echo -e "Starting $SERVICE_NAME...\n"
 	 <% if @wk_config %>
   	su - $RUN_AS -c 'GALAXY_RUN_ALL=42 <%= @directory %>/run.sh --daemon'
         <% else %>
@@ -27,7 +27,7 @@ start() {
 }
 
 stop() {
-	echo -n "Stopping $SERVICE_NAME... "
+	echo -ne "Stopping $SERVICE_NAME...\n"
          <% if @wk_config %>
   	su - $RUN_AS -c 'GALAXY_RUN_ALL=42 <%= @directory %>/run.sh --stop-daemon'
         <% else %>
