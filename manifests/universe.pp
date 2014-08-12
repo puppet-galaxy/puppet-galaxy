@@ -427,25 +427,28 @@
 # Copyright 2014, for the puppet code representing a universe_wsgi.ini resource.
 #
 class galaxy::universe(
-  # Worker Configuration
+  # Workers & Handlers Configuration
   $wk_config = false,
 
   $number_of_web_workers          = 4,
   $webworker_starting_port_number = 8000,
-  $webworker_host_to_listen_on    = "0.0.0.0",
+  $webworker_host_to_listen_on    = '0.0.0.0',
   $webworker_threadpool_workers   = 5,
 
   $number_of_background_workers = 4,
-  $handler_host_to_listen_on    = "0.0.0.0",
+  $handler_host_to_listen_on    = '0.0.0.0',
   $handler_threadpool_workers   = 5,
+
+  # Server Main Configuration
+  $main_host = '0.0.0.0'
 
   # Proxying
   $use_prefix   = true,
-  $proxy_prefix = "/galaxy",
+  $proxy_prefix = '/galaxy',
 
   # Filters
   $filters = [
-    { type => "tool_section_filters", python_class => "galaxy:admin" }
+    { type => "tool_section_filters", python_class => 'galaxy:admin' }
   ],
 
   # Paths
