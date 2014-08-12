@@ -440,7 +440,7 @@ class galaxy::universe(
   $handler_threadpool_workers   = 5,
 
   # Server Main Configuration
-  $main_host = '0.0.0.0'
+  $main_host = '0.0.0.0',
 
   # Proxying
   $use_prefix   = true,
