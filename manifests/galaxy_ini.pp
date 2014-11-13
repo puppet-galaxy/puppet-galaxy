@@ -23,15 +23,6 @@
 # [*handler_threadpool_workers*]
 #   Number of threads in the handler threadpool (per worker)
 #
-# [*number_of_web_workers*]
-#   Number of web workers to start, to service web requests
-#
-# [*webworker_host_to_listen_on*]
-#   Which host to listen on for web workers
-#
-# [*webworker_threadpool_workers*]
-#   Number of threads in the web handler threadpool (per worker)
-#
 # [*use_prefix*]
 #   Set to true if you plan to run galaxy under a prefix like "/galaxy". This
 #   option is commonly used if you're hosting multiple services on a single
@@ -161,6 +152,32 @@
 #
 # [*amqp_port*]
 #
+#
+# [*amqp_userid*]
+#
+#
+# [*amqp_password*]
+#
+#
+# [*amqp_virtual_host*]
+#
+#
+# [*amqp_queue*]
+#
+#
+# [*amqp_exchange*]
+#
+#
+# [*amqp_routing_key*]
+#
+#
+# [*amqp_ctl_path*]
+#
+<<<<<<< HEAD:manifests/galaxy_ini.pp
+=======
+#
+# [*amqp_port*]
+#
 # [*amqp_userid*]
 #
 # [*amqp_password*]
@@ -175,6 +192,7 @@
 #
 # [*amqp_ctl_path*]
 #
+>>>>>>> a92d0ac394a38bb23d9eee920a4bf6c7e158878e:manifests/universe.pp
 # [*admin_email*]
 #   Datasets in an error state include a link to report the error. Those
 #   reports will be sent to this address. Error reports are disabled if no
@@ -434,7 +452,7 @@ class galaxy::galaxy_ini(
   $webworker_starting_port_number = 8000,
   $webworker_host_to_listen_on    = '0.0.0.0',
   $webworker_threadpool_workers   = 5,
-
+ 
   $number_of_background_workers = 4,
   $handler_host_to_listen_on    = '0.0.0.0',
   $handler_threadpool_workers   = 5,
@@ -543,7 +561,7 @@ class galaxy::galaxy_ini(
   ## Search ##
   # Whoosh
   $data_search_with_whoosh = false,
-
+  
   # Lucene
   $data_search_with_lucene           = false,
   $lucene_fulltext_max_size          = 500,
@@ -583,7 +601,6 @@ class galaxy::galaxy_ini(
   $handler_starting_port_number       = $webworker_starting_port_number+$number_of_background_workers
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
   $number_of_web_workers_array        = range("0", -1+$number_of_web_workers)
-
   if($id_secret == 'my-secret-random-id'){
     fail('You must specify a random secret ID for this galaxy instance. This should be unique to each galaxy instance.')
   }

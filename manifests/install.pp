@@ -28,9 +28,9 @@
 # Copyright 2014, unless otherwise noted.
 #
 class galaxy::install(
-  $install_directory = "$galaxy::params::app_directory/",
-  $galaxy_branch     = $galaxy::params::galaxy_branch,
-  $galaxy_repository     = $galaxy::params::galaxy_repository,
+  $install_directory = $galaxy::universe::app_directory,
+  $galaxy_branch     = $galaxy::universe::galaxy_branch,
+  $galaxy_repository = $galaxy::universe::repository,
 ){
 
   # There is a "bug" here in that every puppet run we'll get notifications of switching branches, even though we're not actually making changes. E.g.,
@@ -38,7 +38,7 @@ class galaxy::install(
   #Notice: /Stage[main]/Custom::Puppetlxc/Galaxy::Instance[test]/Galaxy::Install[test]/Vcsrepo[/home/galaxy/galaxy-dist/]/revision: revision changed '29ce93a13ac7' to 'default'
   #
   # I'm not sure what the best course of action here is. Let the module clutter our logs up or switch to running commands (test for branch/run with onlyif)
-  vcsrepo { $install_directory:
+  vcsrepo { "$install_directory/":
     require  => Class ['galaxy'],
     ensure   => present,
     user     => 'galaxy',

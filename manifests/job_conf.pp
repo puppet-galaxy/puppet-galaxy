@@ -54,7 +54,7 @@
 #      { id => 'condor', runner => 'condor' }
 #    ]
 #  }
-#    
+#
 # === Authors
 #
 # Eric Rasche <rasche.eric@yandex.ru>
@@ -66,15 +66,16 @@
 class galaxy::job_conf(
   $app_directory                = $galaxy::params::app_directory,
   $number_of_background_workers = $galaxy::galaxy_ini::numbers_of_background_workers,
+
   # Runners
-  $enable_runner_local  = true,
-  $enable_runner_pbs    = false,
-  $enable_runner_drmaa  = false,
-  $enable_runner_lwr    = false,
-  $enable_runner_cli    = false,
-  $enable_runner_condor = false,
-  $default_worker_threads = 4,
-  $default_destination = 'local',
+  $enable_runner_local    = true,
+  $enable_runner_pbs      = true,
+  $enable_runner_drmaa    = true,
+  $enable_runner_lwr      = true,
+  $enable_runner_cli      = true,
+  $enable_runner_condor   = true,
+  $default_worker_threads = 2,
+  $default_destination    = local,
   $destinations = [
     { id => 'local', runner => 'local' }
   ]

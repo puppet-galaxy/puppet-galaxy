@@ -34,12 +34,12 @@
 #
 # Copyright 2014, unless otherwise noted.
 #
-class galaxy ( 
-	$galaxy_branch  = $galaxy::params::galaxy_branch,
-	$create_user    = $galaxy::params::create_user,
-	$home_directory = $galaxy::params::home_directory,
-) inherits galaxy::params {
-  class { 'galaxy::dependencies': }
+class galaxy (
+  $galaxy_branch = $galaxy::universe::galaxy_branch,
+  $create_user   = $galaxy::universe::create_user,
+  $directory     = $galaxy::universe::app_directory,
+) {
+  include galaxy::dependencies
   if($create_user){
     user { 'galaxy':
       ensure     => present,

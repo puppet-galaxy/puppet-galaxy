@@ -15,6 +15,13 @@
         * [Class: galaxy::service](#class-galaxyservice)
         * [Class: galaxy::toolshed_conf](#class-galaxytoolshed_conf)
         * [Class: galaxy::galaxy_ini](#class-galaxygalaxy_ini)
+    * [Defined Types](#defined-types)
+        * [Type: galaxy::first_run](#type-galaxyfirst_run)
+        * [Type: galaxy::install](#type-galaxyinstall)
+        * [Type: galaxy::job_conf](#type-galaxyjob_conf)
+        * [Type: galaxy::service](#type-galaxyservice)
+        * [Type: galaxy::toolshed_conf](#type-galaxytoolshed_conf)
+        * [Type: galaxy::universe](#type-galaxyuniverse)
 5. [Parameters](#parameters)
 7. [Contact](#contact)
 8. [Galaxy Project](#galaxy-project)
@@ -57,6 +64,9 @@ This class configures galaxy service. Currently debain/redhat are the only two s
 
 ####Class: `galaxy::toolshed_conf`
 This class writes Galaxy toolshed configuration. Specifies which toolsheds are available to use in the web interface.
+
+####Type: `galaxy::job_conf`
+This type writes the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp
 
 ####Class: `galaxy::galaxy_ini`
 
