@@ -32,7 +32,7 @@ class galaxy::directories(
     '/home/galaxy/galaxy-dist/static/genetrack/plots',
   ]
  file  { $paths:
-    before => Class['galaxy::universe'],
+    before => Class['galaxy::galaxy_ini'],
     ensure => directory,
     owner  => 'galaxy',
     group  => 'galaxy',

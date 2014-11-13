@@ -1,7 +1,7 @@
 # == Class: galaxy::job_conf
 #
 # Configures the job_conf.xml file. Should ensure that the number of background
-# workers here matches what is specified for galaxy::universe
+# workers here matches what is specified for galaxy::galaxy_ini
 #
 # === Parameters
 #
@@ -11,7 +11,7 @@
 #
 # [*number_of_background_workers*]
 #   Same number of background workers that were specified in the
-#   galaxy::universe call
+#   galaxy::galaxy_ini call
 #
 # [*enable_runner_local*]
 #   Local job runner, no further config options
@@ -65,7 +65,7 @@
 #
 class galaxy::job_conf(
   $app_directory                = $galaxy::params::app_directory,
-  $number_of_background_workers = $galaxy::universe::numbers_of_background_workers,
+  $number_of_background_workers = $galaxy::galaxy_ini::numbers_of_background_workers,
   # Runners
   $enable_runner_local  = true,
   $enable_runner_pbs    = false,
@@ -80,7 +80,7 @@ class galaxy::job_conf(
   ]
 ){
   
-  ## Currently copy/pasted from universe.pp, need to refactor into settings once.
+  ## Currently copy/pasted from galaxy_ini.pp, need to refactor into settings once.
   $number_of_background_workers_array = range("0", -1+$number_of_background_workers)
 
   file { "$app_directory/job_conf.xml":
