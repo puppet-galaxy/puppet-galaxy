@@ -184,7 +184,7 @@ new_file_path = <%= @tmp_file_dir %>
 
 # Tool config files, defines what tools are available in Galaxy.
 # Tools can be locally developed or installed from Galaxy tool sheds.
-tool_config_file = <%= Array(@tool_config_files).join(",") %>
+tool_config_file = <%= @tool_conf_file%>, <%= @shed_tool_conf_file %>
 
 # Default path to the directory containing the tools defined in tool_conf.xml.
 # Other tool config files must include the tool_path as an attribute in the <toolbox> tag.

@@ -26,7 +26,7 @@
     </plugins>
     <handlers default="handlers">
         <!-- Additional job handlers - the id should match the name of a
-             [server:<id>] in universe_wsgi.ini.
+             [server:<id>] in galaxy.ini.
          -->
         <% for i in @number_of_background_workers_array do %>
         <handler id="handler<%= i %>" tags="handlers" />
