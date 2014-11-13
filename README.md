@@ -14,7 +14,7 @@
         * [Class: galaxy::job_conf](#class-galaxyjob_conf)
         * [Class: galaxy::service](#class-galaxyservice)
         * [Class: galaxy::toolshed_conf](#class-galaxytoolshed_conf)
-        * [Class: galaxy::universe](#class-galaxyuniverse)
+        * [Class: galaxy::galaxy_ini](#class-galaxygalaxy_ini)
 5. [Parameters](#parameters)
 7. [Contact](#contact)
 8. [Galaxy Project](#galaxy-project)
@@ -50,7 +50,7 @@ This class executes  manage_tools.py wich updates the tools.
 This class download the remote repository from bickbuckets.org/galaxy/galaxy-dist with mercurial.
 
 ####Class: `galaxy::job_conf`
-This class writes the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in universe.pp
+This class writes the job_conf.xml file with a template. Make sure the numbers of background workers (handlers) matches the numberwich is in galaxy_ini.pp
 
 ####Class: `galaxy::service`
 This class configures galaxy service. Currently debain/redhat are the only two supported.
@@ -58,9 +58,9 @@ This class configures galaxy service. Currently debain/redhat are the only two s
 ####Class: `galaxy::toolshed_conf`
 This class writes Galaxy toolshed configuration. Specifies which toolsheds are available to use in the web interface.
 
-####Class: `galaxy::universe`
+####Class: `galaxy::galaxy_ini`
 
-This class writes the universe_wsgi.ini , the main configuration file of Galaxy.
+This class writes the galaxy.ini , the main configuration file of Galaxy.
 
 ##Parameters
 
