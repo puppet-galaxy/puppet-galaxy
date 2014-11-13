@@ -23,7 +23,7 @@ puppet module install urgi/galaxy
 </pre>
 
 * Wait full server install ~ 5/10 minutes
-* If http access is not done locally, change adress in universe_wgsi.ini section [server:main]
+* If http access is not done locally, change adress in galaxy.ini section [server:main]
 
 <pre>
 host=0.0.0.0
