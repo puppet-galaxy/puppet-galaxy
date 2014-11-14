@@ -34,7 +34,7 @@ class galaxy::toolshed_conf (
   $custom_toolsheds = [],
 ){
   file { "$app_directory/tool_sheds_conf.xml":
-    require => Class['galaxy::universe'],
+    require => Class['galaxy::galaxy_ini'],
     content => template("galaxy/tool_sheds_conf.xml.erb"),
     owner   => 'galaxy',
     group   => 'galaxy',

@@ -20,7 +20,7 @@
 #
 class galaxy::service (
   $directory = $galaxy::params::app_directory,
-  $wk_config = $galaxy::universe::wk_config,
+  $wk_config = $galaxy::galaxy_ini::wk_config,
 ) 
 inherits galaxy::params 
 {   

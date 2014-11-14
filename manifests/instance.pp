@@ -63,7 +63,7 @@ define galaxy::instance (
     directory => "$directory",
   } 
   
-  galaxy::universe{ "$name":
+  galaxy::galaxy_ini{ "$name":
     directory => "$directory",
     id_secret => $id_secret,
   } 

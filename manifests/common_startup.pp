@@ -7,7 +7,7 @@ class galaxy::common_startup{
   include galaxy::params
   $directory = $galaxy::params::app_directory
   file { "$directory/common_startup.sh":
-    require => Class['galaxy::universe'],
+    require => Class['galaxy::galaxy_ini'],
     source  => '/etc/puppet/modules/galaxy/files/common_startup.sh',
     mode    => 'a=r+w+x',
     owner   => 'galaxy',
