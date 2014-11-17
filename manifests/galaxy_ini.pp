@@ -597,7 +597,7 @@ class galaxy::galaxy_ini(
 
   file { $galaxy_ini:
     require => Class['galaxy::install'],
-    content => template("galaxy/universe_wsgi.ini.erb"),
+    content => template("galaxy/galaxy_ini.erb"),
     owner   => 'galaxy',
     group   => 'galaxy',
   }
