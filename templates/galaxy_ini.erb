@@ -1,0 +1,871 @@
+#
+# Galaxy is configured by default to be useable in a single-user development
+# environment.  To tune the application for a multi-user production
+# environment, see the documentation at:
+#
+#  http://usegalaxy.org/production
+#
+
+# Throughout this sample configuration file, except where stated otherwise,
+# uncommented values override the default if left unset, whereas commented
+# values are set to the default value.
+# Examples of many of these options are explained in more detail in the wiki:
+#
+#   https://wiki.galaxyproject.org/Admin/Config
+#
+# Config hackers are encouraged to check there before asking for help.
+
+# ---- HTTP Server ----------------------------------------------------------
+
+# Configuration of the internal HTTP server.
+#	
+<%if @wk_config%>
+<% for i in @number_of_web_workers_array do %>
+[server:web<%= i %>]
+use=egg:Paste#http
+port=<%= @webworker_starting_port_number.to_i + i %>
+host=<%= @webworker_host_to_listen_on %>
+use_threadpool=true
+threadpool_workers=<%= @webworker_threadpool_workers %>
+
+<% end %>
+
+<% for i in @number_of_background_workers_array do %>
+[server:handler<%= i %>]
+use=egg:Paste#http
+port=<%= @handler_starting_port_number.to_i + i %>
+host=<%= @handler_host_to_listen_on %>
+use_threadpool=true
+threadpool_workers=<%= @handler_threadpool_workers %>
+<% end %>
+
+<%else%>
+[server:main]
+# The internal HTTP server to use.  Currently only Paste is provided.  This
+#	option is required.
+use = egg:Paste#http	
+# The port on which to listen.
+#port = 8080
+#	
+# The address on which to listen.  By default, only listen to localhost (Galaxy
+# will not be accessible over the network).  Use '0.0.0.0' to listen on all
+# available network interfaces.
+host = <%= @main_host %>
+#	
+#	Use a threadpool for the web server instead of creating a thread for each
+#	request.
+use_threadpool = True
+#	
+#	Number of threads in the web server thread pool.
+#threadpool_workers = 10
+#	
+#	Set the number of seconds a thread can work before you should kill it (assuming it will never finish) to 3 hours.
+threadpool_kill_thread_limit = 10800
+<% end  %>
+
+# ---- Filters --------------------------------------------------------------
+# Filters sit between Galaxy and the HTTP server.
+# These filters are disabled by default.  They can be enabled with
+# 'filter-with' in the [app:main] section below.
+
+# Define the gzip filter.
+[filter:gzip]
+use = egg:Paste#gzip
+
+# Define the proxy-prefix filter.
+[filter:proxy-prefix]
+use = egg:PasteDeploy#prefix
+<% if @use_prefix %>
+prefix = <%= @proxy_prefix %>
+<% end %>
+
+# ---- Galaxy ---------------------------------------------------------------
+
+# Configuration of the Galaxy application.
+
+[app:main]
+
+# -- Application and filtering
+
+# The factory for the WSGI application.  This should not be changed.
+paste.app_factory = galaxy.web.buildapp:app_factory
+
+<% if @use_prefix %>
+filter-with = proxy-prefix
+
+# If proxy-prefix is enabled and you're running more than one Galaxy instance
+# behind one hostname, you will want to set this to the same path as the prefix
+# in the filter above.  This value becomes the "path" attribute set in the
+# cookie so the cookies from each instance will not clobber each other.
+cookie_path = <%= @proxy_prefix %>
+<% end %>
+
+# -- Database
+
+# By default, Galaxy uses a SQLite database at 'database/universe.sqlite'.  You
+# may use a SQLAlchemy connection string to specify an external database
+# instead.  This string takes many options which are explained in detail in the
+# config file documentation.
+#database_connection = sqlite:///./database/universe.sqlite?isolation_level=IMMEDIATE
+
+# If the server logs errors about not having enough database pool connections,
+# you will want to increase these values, or consider running more Galaxy
+# processes.
+#database_engine_option_pool_size = 5
+#database_engine_option_max_overflow = 10
+
+# If using MySQL and the server logs the error "MySQL server has gone away",
+# you will want to set this to some positive value (7200 should work).
+#database_engine_option_pool_recycle = -1
+
+# If large database query results are causing memory or response time issues in
+# the Galaxy process, leave the result on the server instead.  This option is
+# only available for PostgreSQL and is highly recommended.
+#database_engine_option_server_side_cursors = False
+
+# Create only one connection to the database per thread, to reduce the
+# connection overhead.  Recommended when not using SQLite:
+#database_engine_option_strategy = threadlocal
+
+# Log all database transactions, can be useful for debugging and performance
+# profiling.  Logging is done via Python's 'logging' module under the qualname
+# 'galaxy.model.orm.logging_connection_proxy'
+#database_query_profiling_proxy = False
+
+database_connection=<%= @db_connection%>
+
+<% if !@db_driver.eql?"sqlite" %>
+database_engine_option_pool_size = <%= @db_opts_pool_size%>
+database_engine_option_max_overflow = <%= @db_opts_max_overflow%>
+	<% if @db_driver.eql?"mysql" %>
+# If using MySQL and the server logs the error "MySQL server has gone away",
+# you will want to set this to some positive value (7200 should work).
+database_engine_option_pool_recycle = -1
+	<% end %>
+	<% if @db_driver.eql?"postgresql" %>
+# If large database query results are causing memory or response time issues in
+# the Galaxy process, leave the result on the server instead.  This option is
+# only available for PostgreSQL and is highly recommended.
+database_engine_option_server_side_cursors = True
+	<% end %>
+# Create only one connection to the database per thread, to reduce the
+# connection overhead.  Recommended when not using SQLite:
+database_engine_option_strategy = threadlocal
+<% end %>
+
+# Log all database transactions, can be useful for debugging and performance
+# profiling.  Logging is done via Python's 'logging' module under the qualname
+# 'galaxy.model.orm.logging_connection_proxy'
+<% if @database_query_profiling_proxy %>
+database_query_profiling_proxy = True
+<% else %>
+database_query_profiling_proxy = False
+<% end %>
+
+# -- Files and directories
+
+# Dataset files are stored in this directory.
+file_path = <%= @file_path%>
+
+# Temporary files are stored in this directory.
+new_file_path = <%= @tmp_file_dir %>
+
+# Tool config files, defines what tools are available in Galaxy.
+# Tools can be locally developed or installed from Galaxy tool sheds.
+# (config/tool_conf.xml.sample will be used if left unset and
+# config/tool_conf.xml does not exist).
+tool_config_file = <%= @tool_conf_file%>, <%= @shed_tool_conf_file %>
+
+# Enable / disable checking if any tools defined in the above non-shed tool_config_files
+# (i.e., tool_conf.xml) have been migrated from the Galaxy code distribution to the Tool
+# Shed.  This setting should generally be set to False only for development Galaxy environments
+# that are often rebuilt from scratch where migrated tools do not need to be available in the
+# Galaxy tool panel.  If the following setting remains commented, the default setting will be True.
+#check_migrate_tools = True
+#
+# Tool config maintained by tool migration scripts. If you use the migration
+# scripts to install tools that have been migrated to the tool shed upon a new
+# release, they will be added to this tool config file.
+#migrated_tools_config = migrated_tools_conf.xml
+#
+# File that contains the XML section and tool tags from all tool panel config
+# files integrated into a single file that defines the tool panel layout.  This
+# file can be changed by the Galaxy administrator to alter the layout of the
+# tool panel. If not present, Galaxy will create it.
+#integrated_tool_panel_config = integrated_tool_panel.xml
+
+# Default path to the directory containing the tools defined in tool_conf.xml.
+# Other tool config files must include the tool_path as an attribute in the <toolbox> tag.
+#tool_path = tools
+
+# Path to the directory in which tool dependencies are placed.  This is used by
+# the tool shed to install dependencies and can also be used by administrators
+# to manually install or link to dependencies.  For details, see:
+#   https://wiki.galaxyproject.org/Admin/Config/ToolDependencies
+# If this option is not set to a valid path, installing tools with dependencies
+# from the Tool Shed will fail.
+tool_dependency_dir = <%= @tool_dependency_dir %>
+
+# File containing the Galaxy Tool Sheds that should be made available to
+# install from in the admin interface (.sample used if default does not exist).
+# tool_sheds_config_file = config/tool_sheds_conf.xml
+
+# Enable automatic polling of relative tool sheds to see if any updates
+# are available for installed repositories.  Ideally only one Galaxy
+# server process should be able to check for repository updates.  The
+# setting for hours_between_check should be an integer between 1 and 24.
+#enable_tool_shed_check = False
+#hours_between_check = 12
+
+# Enable use of an in-memory registry with bi-directional relationships
+# between repositories (i.e., in addition to lists of dependencies for a
+# repository, keep an in-memory registry of dependent items for each repository.
+#manage_dependency_relationships = False
+
+# XML config file that contains data table entries for the
+# ToolDataTableManager. This file is manually # maintained by the Galaxy
+# administrator (.sample used if default does not exist).
+#tool_data_table_config_path = tool_data_table_conf.xml
+
+# XML config file that contains additional data table entries for the ToolDataTableManager.  This file
+# is automatically generated based on the current installed tool shed repositories that contain valid
+# tool_data_table_conf.xml.sample files.  At the time of installation, these entries are automatically
+# added to the following file, which is parsed and applied to the ToolDataTableManager at server start up.
+#shed_tool_data_table_config = config/shed_tool_data_table_conf.xml
+
+# Directory where data used by tools is located, see the samples in that
+# directory and the wiki for help:
+# http://wiki.g2.bx.psu.edu/Admin/Data%20Integration
+#tool_data_path = tool-data
+
+# File containing old-style genome builds
+#builds_file_path = tool-data/shared/ucsc/builds.txt
+
+# Directory where chrom len files are kept, currently mainly used by trackster
+#len_file_path = tool-data/shared/ucsc/chrom
+
+# Datatypes config file, defines what data (file) types are available in
+# Galaxy  (.sample is used if default does not exist).
+#datatypes_config_file = config/datatypes_conf.xml
+
+# Disable the 'Auto-detect' option for file uploads
+#datatypes_disable_auto = False
+
+# Visualizations config directory: where to look for individual visualization plugins.
+# The path is relative to the Galaxy root dir. To use an absolute path begin the path
+# with '/'. Defaults to "config/plugins/visualizations".
+#visualization_plugins_directory = config/plugins/visualizations
+
+# Each job is given a unique empty directory as its current working directory.
+# This option defines in what parent directory those directories will be
+# created.
+job_working_directory = <%= @job_working_dir %>
+
+# If using a cluster, Galaxy will write job scripts and stdout/stderr to this
+# directory.
+cluster_files_directory = <%= @cluster_files_dir %>
+
+# Mako templates are compiled as needed and cached for reuse, this directory is
+# used for the cache
+#template_cache_path = database/compiled_templates
+#
+# Citation related caching. Tool citations information maybe fetched from
+# external sources such as http://dx.doi.org/ by Galaxy - the following parameters
+# can be used to control the caching used to store this information.
+#citation_cache_type = file
+#citation_cache_data_dir = database/citations/data
+#citation_cache_lock_dir = database/citations/lock
+
+# External service types config file, defines what types of external_services configurations
+# are available in Galaxy.
+#external_service_type_config_file = external_service_types_conf.xml
+
+# Path to the directory containing the external_service_types defined in the config.
+#external_service_type_path = external_service_types
+
+# Tools with a number of outputs not known until runtime can write these
+# outputs to a directory for collection by Galaxy when the job is done.
+# Previously, this directory was new_file_path, but using one global directory
+# can cause performance problems, so using job_working_directory ('.' or cwd
+# when a job is run) is encouraged.  By default, both are checked to avoid
+# breaking existing tools.
+#collect_outputs_from = new_file_path,job_working_directory
+
+# -- Data Storage (Object Store)
+#
+# Configuration file for the object store
+# If this is set and exists, it overrides any other objectstore settings.
+# object_store_config_file = config/object_store_conf.xml
+
+# Object store backend module (valid options are: disk, s3, swift, irods,
+# distributed, hierarchical)
+#object_store = disk
+
+# *Extremely* old Galaxy instances created datasets at the root of the
+# `file_path` defined above.  If your Galaxy instance has datasets at the root
+# (instead of in directories composed by hashing the dataset id), you should
+# enable this option to allow Galaxy to find them.
+#object_store_check_old_style = False
+
+# Credentials used by certain (s3, swift) object store backends
+#os_access_key = <your cloud object store access key>
+#os_secret_key = <your cloud object store secret key>
+#os_bucket_name = <name of an existing object store bucket or container>
+
+# If using 'swift' object store, you must specify the following connection
+# properties
+#os_host = swift.rc.nectar.org.au
+#os_port = 8888
+#os_is_secure = False
+#os_conn_path = /
+
+# Reduced redundancy can be used only with the 's3' object store
+#os_use_reduced_redundancy = False
+
+# Path to cache directory for object store backends that utilize a cache (s3,
+# swift, irods)
+#object_store_cache_path = database/files/
+
+# Size (in GB) that the cache used by object store should be limited to.
+# If the value is not specified, the cache size will be limited only by the
+# file system size.
+#object_store_cache_size = 100
+
+# Configuration file for the distributed object store, if object_store =
+# distributed.  See the sample at distributed_object_store_conf.xml.sample
+#distributed_object_store_config_file = None
+
+<% if @smtp_server %>
+# -- Mail and notification
+
+# Galaxy sends mail for various things: Subscribing users to the mailing list
+# if they request it, emailing password resets, notification from the Galaxy
+# Sample Tracking system, and reporting dataset errors.  To do this, it needs
+# to send mail through an SMTP server, which you may define here (host:port).
+# Galaxy will automatically try STARTTLS but will continue upon failure.
+smtp_server = <%= @smtp_server %>
+
+# If your SMTP server requires a username and password, you can provide them
+# here (password in cleartext here, but if your server supports STARTTLS it
+# will be sent over the network encrypted).
+<% if @smtp_username %>
+smtp_username = <%= @smtp_username %>
+<% end %>
+<% if @smtp_password %>
+smtp_password = <%= @smtp_password %>
+<% end %>
+
+<% end %>
+# If your SMTP server requires SSL from the beginning of the connection
+# smtp_ssl = False
+
+# On the user registration form, users may choose to join the mailing list.
+# This is the address of the list they'll be subscribed to.
+#mailing_join_addr = galaxy-announce-join@bx.psu.edu
+
+# Datasets in an error state include a link to report the error.  Those reports
+# will be sent to this address.  Error reports are disabled if no address is set.
+# Also this email is shown as a contact to user in case of Galaxy misconfiguration and other events user may encounter.
+#error_email_to = None
+
+# Activation email is used as a sender ('from' field) for the account activation mail.
+# We recommend using string in the following format: Galaxy Project <galaxy-no-reply@example.com>
+#activation_email = None
+
+# URL of the support resource for the galaxy instance. Used in activation emails.
+#instance_resource_url = http://wiki.galaxyproject.org/
+#
+# E-mail domains blacklist is used for filtering out users that are using disposable email address
+# during the registration. If their address domain matches any domain in the BL they are refused the registration.
+#blacklist_file = config/disposable_email_blacklist.conf
+
+# Registration warning message is used to discourage people from registering multiple accounts. Applies mostly for the main Galaxy instance.
+# If no message specified the warning box will not be shown.
+#registration_warning_message = Please register only one account - we provide this service free of charge and have limited computational resources. Multi-accounts are tracked and will be subjected to account termination and data deletion.
+
+# When users opt to reset passwords, new ones are created, this option
+# specifies the length of these passwords.
+#reset_password_length = 15
+
+# -- Account activation
+
+# This is user account activation feature global flag. If set to "False" the rest of the Account 
+# activation configuration is ignored and user activation is disabled (a.k.a. accounts are active since registration).
+# Note the activation is also not working in case the smtp server is not defined.
+#user_activation_on = False
+
+# Activation grace period. Activation is not forced (login is not disabled) until 
+# grace period has passed. Users under grace period can't run jobs (see inactivity_box_content).
+# In hours. Default is 3. Enter 0 to disable grace period. 
+# Users with OpenID logins have grace period forever. 
+#activation_grace_period = 0
+
+# Used for warning box for inactive accounts (unable to run jobs).
+# In use only if activation_grace_period is set.
+#inactivity_box_content = Your account has not been activated yet.  Feel free to browse around and see what's available, but you won't be able to upload data or run jobs until you have verified your email address.
+
+
+
+# -- Display sites
+
+# Galaxy can display data at various external browsers.  These options specify
+# which browsers should be available.  URLs and builds available at these
+# browsers are defined in the specifield files.
+
+# If use_remote_user = True, display application servers will be denied access
+# to Galaxy and so displaying datasets in these sites will fail.
+# display_servers contains a list of hostnames which should be allowed to
+# bypass security to display datasets.  Please be aware that there are security
+# implications if this is allowed.  More details (including required changes to
+# the proxy server config) are available in the Apache proxy documentation on
+# the wiki.
+#
+# The list of servers in this sample config are for the UCSC Main, Test and
+# Archaea browsers, but the default if left commented is to not allow any
+# display sites to bypass security (you must uncomment the line below to allow
+# them).
+#display_servers = hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
+
+# To disable the old-style display applications that are hardcoded into datatype classes,
+# set enable_old_display_applications = False.
+# This may be desirable due to using the new-style, XML-defined, display applications that
+# have been defined for many of the datatypes that have the old-style.
+# There is also a potential security concern with the old-style applications,
+# where a malicious party could provide a link that appears to reference the Galaxy server,
+# but contains a redirect to a third-party server, tricking a Galaxy user to access said
+# site.
+#enable_old_display_applications = True
+
+# -- Next gen LIMS interface on top of existing Galaxy Sample/Request management code.
+
+use_nglims = False
+nglims_config_file = tool-data/nglims.yaml
+
+# -- UI Localization
+
+# Show a message box under the masthead.
+#message_box_visible = False
+#message_box_content = None
+#message_box_class = info
+
+<% if @ui_branding %>
+# Append "/{brand}" to the "Galaxy" text in the masthead.
+brand = <%= @branding %>
+<% end %>
+
+# Format string used when showing date and time information.
+# # The string may contain:
+# # - the directives used by Python time.strftime() function (see http://docs.python.org/2/library/time.html#time.strftime ),
+# # - $locale (complete format string for the server locale),
+# # - $iso8601 (complete format string as specified by ISO 8601 international standard).
+# # pretty_datetime_format = $locale (UTC)
+
+
+<% if @ui_welcome_url %>
+# The URL of the page to display in Galaxy's middle pane when loaded. This can be 
+# an absolute or relative URL.
+welcome_url = <%= @ui_welcome_url %>
+<% end %>
+
+<% if @ui_logo_url %>
+# The URL linked by the "Galaxy/brand" text.
+logo_url = <%= @ui_logo_url %>
+<% end %>
+
+<% if @ui_extra_wiki_url %>
+# The URL linked by the "Wiki" link in the "Help" menu.
+wiki_url = <%= @ui_extra_wiki_url %>
+<% end %>
+
+<% if @ui_extra_support_url %>
+# The URL linked by the "Support" link in the "Help" menu.
+support_url = <%= @ui_extra_support_url %>
+<% end %>
+
+<% if @ui_extra_citation_url %>
+# The URL linked by the "How to Cite Galaxy" link in the "Help" menu.
+citation_url = <%= @ui_extra_citation_url %>
+<% end %>
+
+#The URL linked by the "Search" link in the "Help" menu.
+#search_url = http://galaxyproject.org/search/usegalaxy/
+
+#The URL linked by the "Mailing Lists" link in the "Help" menu.
+#mailing_lists_url = http://wiki.galaxyproject.org/MailingLists
+
+#The URL linked by the "Videos" link in the "Help" menu.
+#videos_url = http://vimeo.com/galaxyproject
+
+<% if @ui_extra_terms_url %>
+# The URL linked by the "Terms and Conditions" link in the "Help" menu, as well
+# as on the user registration and login forms and in the activation emails.
+terms_url = <%= @ui_extra_terms_url %>
+<% end %>
+
+# The URL linked by the "Galaxy Q&A" link in the "Help" menu
+# The Galaxy Q&A site is under development; when the site is done, this URL
+# will be set and uncommented.
+#qa_url = 
+
+
+# Serve static content, which must be enabled if you're not serving it via a
+# proxy server.  These options should be self explanatory and so are not
+# documented individually.  You can use these paths (or ones in the proxy
+# server) to point to your own styles.
+static_enabled = True
+static_cache_time = 360
+static_dir = %(here)s/static/
+static_images_dir = %(here)s/static/images
+static_favicon_dir = %(here)s/static/favicon.ico
+static_scripts_dir = %(here)s/static/scripts/
+static_style_dir = %(here)s/static/june_2007_style/blue
+static_robots_txt = %(here)s/static/robots.txt
+
+# Pack javascript at launch (/static/scripts/*.js)
+# This only happens if the modified timestamp of the source .js is newer
+# than the version (if it exists) in /static/scripts/packed/
+# Note that this requires java > 1.4 for executing yuicompressor.jar
+#pack_scripts = False
+
+<% if @cloud_enable_launch %>
+enable_cloud_launch = True
+cloudlaunch_default_ami = <%= @cloud_ami %>
+<% end %>
+<%#
+		
+#display_chunk_size = 65536
+
+
+# -- Advanced proxy features
+
+# For help on configuring the Advanced proxy features, see:
+# http://usegalaxy.org/production
+%>
+<% if @webserver.eql?"apache" %>
+# Apache can handle file downloads (Galaxy-to-user) via mod_xsendfile.  Set
+# this to True to inform Galaxy that mod_xsendfile is enabled upstream.#
+  <% if @xsendfile %>
+apache_xsendfile = True
+  <% end %>
+<% else if @webserver.eql?"nginx" %>
+  <% if @x_accel_redirect %>
+# The same download handling can be done by nginx using X-Accel-Redirect.  This
+# should be set to the path defined in the nginx config as an internal redirect
+# with access to Galaxy's data files (see documentation linked above).
+nginx_x_accel_redirect_base = True
+  <% end %>
+  <% if @x_archive_files %>
+# nginx can make use of mod_zip to create zip files containing multiple library
+# files.  If using X-Accel-Redirect, this can be the same value as that option.
+nginx_x_archive_files_base = True
+  <% end %>
+  <% if @upstream_gzip %>
+# If using compression in the upstream proxy server, use this option to disable
+# gzipping of library .tar.gz and .zip archives, since the proxy server will do
+# it faster on the fly.
+upstream_gzip = true
+  <% end %>
+  <% if @nginx_upload_store %>
+# nginx can also handle file uploads (user-to-Galaxy) via nginx_upload_module.
+# Configuration for this is complex and explained in detail in the
+# documentation linked above.  The upload store is a temporary directory in
+# which files uploaded by the upload module will be placed.
+#nginx_upload_store = True
+  <% end %>
+  <% if @nginx_upload_path %>
+# This value overrides the action set on the file upload form, e.g. the web 
+# path where the nginx_upload_module has been configured to intercept upload
+# requests.
+nginx_upload_path = True
+  <% end %>
+<% end %>
+<% end %>
+
+# -- Logging and Debugging
+
+log_level = <%= @log_level %>
+<% if @database_engine_option_echo %>
+database_engine_option_echo = True
+<% end %>
+<% if @database_engine_option_echo_pool %>
+database_engine_option_echo_pool = True
+<% end %>
+<% if @log_events  %>
+log_events = True
+<% end %>
+<% if @log_actions %>
+log_actions = True
+<% end %>
+<% if @sanitize_all_html %>
+sanitize_all_html = True
+<% end %>
+
+# By default Galaxy will serve non-HTML tool output that may potentially
+# contain browser executable JavaScript content as plain text. This will for
+# instance cause SVG datasets to not render properly and so may be disabled
+# by setting the following option to True.
+#serve_xss_vulnerable_mimetypes = False
+
+<% if @debug_enable %>
+debug = True
+<% end %>
+<% if  @debug_wsgi_lint %>
+use_lint = True
+<% end %>
+<% if @debug_use_profile  %>
+use_profile = True
+<% end %>
+<% if  @debug_use_printdebug %>
+use_printdebug = True
+<% end %>
+<% if @debug_use_interactive  %>
+use_interactive = True
+<% end %>
+<% if @debug_use_heartbeat %>
+use_heartbeat = True
+<% end %>
+<% if @debug_use_memdump %>
+use_memdump = True
+<% end %>
+<%#
+# -- Data Libraries
+
+# These library upload options are described in much more detail in the wiki:
+# http://wiki.g2.bx.psu.edu/Admin/Data%20Libraries/Uploading%20Library%20Files
+%>
+<% if !@library_import_dir.eql?"None" %>
+library_import_dir = <% @library_import_dir %>
+<% end %>
+<% if !@user_library_import_dir.eql?"None" %>
+user_library_import_dir = <% @user_library_import_dir %>
+<% end %>
+<% if @allow_library_path_paste %>
+allow_library_path_paste = True
+<% end %>
+
+<% if @disable_library_comptypes.size > 0 %>
+disable_library_comptypes = <%= Array(@disable_library_comptypes).join(",") %>
+<% end %>
+
+<% if @use_transfer_manager %>
+transfer_manager_port = <% @transfer_manager_port %>
+<% end %>
+<% if @data_search_with_whoosh %>
+enable_whoosh_library_search = True
+whoosh_index_dir = <%= @whoosh_index_dir %>
+<% end %>
+<% if @data_search_with_lucene %>
+enable_lucene_library_search = True
+fulltext_max_size = <%= @lucene_fulltext_max_size %>
+fulltext_noindex_filetypes=<%= Array(@lucene_fulltext_noindex_filetypes).join(",") %>
+fulltext_url = <%= @lucene_fulltext_url %>
+<% end %>
+# -- Users and Security
+
+id_secret = <%= @id_secret %>
+
+<% if @use_remote_user %>
+use_remote_user = True
+remote_user_maildomain = <%= @remote_user_maildomain %>
+
+# If use_remote_user is enabled, the header that the upstream proxy provides
+# the remote username in defaults to HTTP_REMOTE_USER (the 'HTTP_' is prepended
+# by WSGI).  This option allows you to change the header.  Note, you still need
+# to prepend 'HTTP_' to the header in this option, but your proxy server should
+# *not* include 'HTTP_' at the beginning of the header name.
+#remote_user_header = HTTP_REMOTE_USER
+
+remote_user_logout_href = <%= @remote_user_logout_href %>
+<% end %>
+
+# If your proxy and/or authentication source does not normalize e-mail
+# addresses or user names being passed to Galaxy - set the following option
+# to True to force these to lower case.
+#normalize_remote_user_email = False
+
+<% if @admin_users.size > 0 %>
+admin_users = <%= Array(@admin_users).join(",") %>
+<% end %>
+<% if @require_login %>
+require_login = True
+<% end %>
+<% if @allow_user_creation %>
+allow_user_creation = True
+<% end %>
+<% if @allow_user_deletion %>
+allow_user_deletion = True
+<% end %>
+<% if @allow_user_impersonation %>
+allow_user_impersonation = True
+<% end %>
+<% if @allow_user_dataset_purge %>
+allow_user_dataset_purge = True
+<% end %>
+<% if @new_user_dataset_access_role_default_private %>
+new_user_dataset_access_role_default_private = True
+<% end %>
+
+# -- Beta features
+
+# Enable galaxy to communicate directly with a sequencer
+#enable_sequencer_communication = false
+
+<% if @enable_openid %>
+openid_config_file = <%= @openid_config_file %>
+openid_consumer_cache_path = database/openid_consumer_cache
+<% end %>
+<% if @allow_user_impersonation and @admin_users.size > 0%>
+# optional list of email addresses of api users who can make calls on behalf of
+# other users
+api_allow_run_as = <%= array(@admin_users).join(",") %>
+<% end %>
+
+# Master key that allows many API admin actions to be used without actually
+# having a defined admin user in the database/config. Only set this if you need
+# to bootstrap Galaxy, you probably do not want to set this on public servers.
+#master_api_key = changethis
+
+# Enable tool tags (associating tools with tags).  this has its own option
+# since its implementation has a few performance implications on startup for
+# large servers.
+#enable_tool_tags = False
+
+# Enable a feature when running workflows. when enabled, default datasets
+# are selected for "set at runtime" inputs from the history such that the
+# same input will not be selected twice, unless there are more inputs than
+# compatible datasets in the history.
+# when false, the most recently added compatible item in the history will
+# be used for each "set at runtime" input, independent of others in the workflow
+#enable_unique_workflow_defaults = false
+
+# The url to the myexperiment instance being used (omit scheme but include port)
+#myexperiment_url = www.myexperiment.org:80
+
+<% if @enable_ftp_upload %>
+ftp_upload_dir = <%= @ftp_upload_dir %>
+ftp_upload_site = <%= @ftp_upload_site %>
+<% end %>
+<% if @enable_quotas %>
+enable_quotas = True
+<% end %>
+
+# enable a feature when running workflows. when enabled, default datasets
+# are selected for "set at runtime" inputs from the history such that the
+# same input will not be selected twice, unless there are more inputs than
+# compatible datasets in the history.
+# when false, the most recently added compatible item in the history will
+# be used for each "set at runtime" input, independent of others in the workflow
+#enable_unique_workflow_defaults = false
+
+# this option allows users to see the full path of datasets via the "view
+# details" option in the history.  administrators can always see this.
+#expose_dataset_path = false
+
+# Data manager configuration options
+# allow non-admin users to view available data manager options
+#enable_data_manager_user_view = false
+# file where data managers are configured
+#data_manager_config_file = data_manager_conf.xml
+# file where tool shed based data managers are configured 
+#shed_data_manager_config_file = shed_data_manager_conf.xml
+# directory to store data manager based tool-data; defaults to tool_data_path
+#galaxy_data_manager_data_path = tool-data
+
+# -- Job execution
+# to increase performance of job execution and the web interface, you can
+# separate galaxy into multiple processes.  there are more than one way to do
+# this, and they are explained in detail in the documentation:
+#
+# https://wiki.galaxyproject.org/Admin/Config/Performance/Scaling
+
+# By default, galaxy manages and executes jobs from within a single process and
+# notifies itself of new jobs via in-memory queues.  jobs are run locally on
+# the system on which galaxy is started.  advanced job running capabilities can
+# be configured through the job configuration file.
+#job_config_file = <%= @job_config_file %>
+
+<% if @number_of_background_workers.size+@number_of_web_workers.size > 2 %>
+# in multiprocess configurations, notification between processes about new jobs
+# is done via the database.  in single process configurations, this is done in
+# memory, which is a bit quicker.  galaxy tries to automatically determine
+# which method it should used based on your handler configuration in the job
+# config file, but you can explicitly override this behavior by setting the
+# following option to true or false.
+track_jobs_in_database = True
+<% else %>
+track_jobs_in_database = False
+<% end %>
+
+# This enables splitting of jobs into tasks, if specified by the particular tool config.
+# this is a new feature and not recommended for production servers yet.
+#use_tasked_jobs = false
+#local_task_queue_workers = 2
+
+<% if @enable_job_recovery %>
+enable_job_recovery = True
+<% end %>
+
+<% if @retry_metadata_internally %>
+retry_metadata_internally = True
+<% else %>
+retry_metadata_internally = False
+<% end %>
+
+<% if @outputs_to_working_directory %>
+outputs_to_working_directory = True
+<% end %>
+
+<% if Integer(@retry_job_output_collection) > 0 %>
+retry_job_output_collection = <%= @retry_job_output_collection %>
+<% end %>
+
+cleanup_job = <%= @cleanup_job %>
+
+<% if !@environment_setup_file.eql?"None" %>
+environment_setup_file = <%= @environment_setup_file %>
+<% end %>
+
+<% if @cache_user_job_count %>
+cache_user_job_count = True
+<% end %>
+
+# ToolBox filtering
+# Modules from lib/galaxy/tools/filters/ can be specified in the following lines.
+# tool_* filters will be applied for all users and can not be changed by them.
+# user_tool_* filters will be shown under user preferences and can be toogled
+# on and off by runtime
+#tool_filters
+#tool_label_filters
+#tool_section_filters
+#user_tool_filters = examples:restrict_upload_to_admins, examples:restrict_encode
+#user_tool_section_filters = examples:restrict_text
+#user_tool_label_filters = examples:restrict_upload_to_admins, examples:restrict_encode
+
+# Galaxy Application Internal Message Queue
+
+# Galaxy uses AMQP internally TODO more documentation on what for.
+# For examples, see http://ask.github.io/kombu/userguide/connections.html
+
+# Without specifying anything here, galaxy will first attempt to use your
+# specified database_connection above.  If that's not specified either, Galaxy
+# will automatically create and use a separate sqlite database located in your
+# <galaxy>/database folder (indicated in the commented out line below).
+
+#amqp_internal_connection = sqlalchemy+sqlite:///./database/control.sqlite?isolation_level=IMMEDIATE
+
+# ---- Galaxy Message Queue -------------------------------------------------
+
+[galaxy_amqp]
+<% if @use_amqp_server %>
+host = <%= @amqp_host %>
+port = <%= @amqp_port %>
+userid = <%= @amqp_userid %>
+password = <%= @amqp_password %>
+virtual_host = <%= @amqp_virtual_host %>
+queue = <%= @amqp_queue %>
+exchange = <%= @amqp_exchange %>
+routing_key = <%= @amqp_routing_key %>
+ctl_path = <%= @amqp_ctl_path %>
+#rabbitmqctl_path = /path/to/rabbitmqctl
+<% end %>
+
