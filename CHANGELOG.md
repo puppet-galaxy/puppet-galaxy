@@ -1,3 +1,7 @@
+#2014.11.25
+
+=> Rename universe.ini to galaxy.ini. Update galaxy configuration file with new sections.
+
 #2014.07.08 Release 0.0.8
 
 => Added class galaxy::directories , which creates some directories to fix some bug at the initial start of Galaxy.
